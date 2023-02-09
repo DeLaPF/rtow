@@ -5,6 +5,7 @@
 #include "Scene/SceneComponent.h"
 
 #include <cstdint>
+#include <execution>
 #include <iostream>
 
 namespace ImageUtils {
@@ -35,13 +36,32 @@ void Renderer::Resize(uint32_t width, uint32_t height) {
     m_Image.Width = width;
     m_Image.Height = height;
     m_Image.AspectRatio = (double)width / height;
+    m_Image.HorizontalIter.resize(width);
+    m_Image.VerticalIter.resize(height);
+    for (uint32_t i = 0; i < width; i++)
+        m_Image.HorizontalIter[i] = i;
+    for (uint32_t i = 0; i < height; i++)
+        m_Image.VerticalIter[i] = i;
+
 }
 
 void Renderer::Render(const Scene &scene, const Camera &camera) {
     m_ActiveScene = &scene;
     m_ActiveCamera = &camera;
 
-    // TODO: test multithreading
+#define MT 1
+#if MT
+    std::for_each(std::execution::par, m_Image.VerticalIter.begin(), m_Image.VerticalIter.end(),
+    [this](uint32_t y)
+    {
+        std::for_each(std::execution::par, m_Image.HorizontalIter.begin(), m_Image.HorizontalIter.end(),
+        [this, y](uint32_t x)
+        {
+            Vec3 color = RayGen(x, m_Image.Height - y);
+            m_Image.Data[(y * m_Image.Width) + x] = color;
+        });
+    });
+#else
     for (uint32_t y = 0; y < m_Image.Height; y++) {
         std::cerr << "\rScanlines remaining: " << m_Image.Height - 1 - y << ' ' << std::flush;
         for (uint32_t x = 0; x < m_Image.Width; x++) {
@@ -49,6 +69,7 @@ void Renderer::Render(const Scene &scene, const Camera &camera) {
             m_Image.Data[(y * m_Image.Width) + x] = color;
         }
     }
+#endif
 
     ImageUtils::OutputImage(std::cout, m_Image);
     std::cerr << "\nDone.\n";

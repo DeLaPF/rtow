@@ -13,6 +13,9 @@ struct Image {
     uint32_t Width;
     uint32_t Height;
     double AspectRatio;
+
+    std::vector<uint32_t> HorizontalIter;
+    std::vector<uint32_t> VerticalIter;
 };
 
 class Renderer {
