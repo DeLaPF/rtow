@@ -1,0 +1,8 @@
+# Directories
+unixBuild/
+winBuild/
+
+# Auto generated
+.cache/
+compile_commands.json
+image.ppm
