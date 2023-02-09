@@ -8,6 +8,13 @@
 
 #include <cstdint>
 
+struct Image {
+    Vec3* Data;
+    uint32_t Width;
+    uint32_t Height;
+    double AspectRatio;
+};
+
 class Renderer {
     public:
         Renderer() = default;
@@ -15,18 +22,13 @@ class Renderer {
         void Resize(uint32_t width, uint32_t height);
 
         void Render(const Scene& scene, const Camera& camera);
-
     private:
         Vec3 RayGen(uint32_t x, uint32_t y);
 
         HitResult TraceRay(const Ray& ray);
-
     private:
-        uint32_t m_ImageWidth;
-        uint32_t m_ImageHeight;
-        double m_AspectRatio;
+        Image m_Image{nullptr, 0, 0, 0.0};
         uint32_t m_Samples = 100;
-        uint32_t* m_ImageData = nullptr;
 
         const Scene* m_ActiveScene = nullptr;
         const Camera* m_ActiveCamera = nullptr;

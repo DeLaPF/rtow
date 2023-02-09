@@ -7,42 +7,50 @@
 #include <cstdint>
 #include <iostream>
 
-namespace ColorUtils {
+namespace ImageUtils {
     void WriteColor(std::ostream &out, Vec3 color) {
         // Write the translated [0,255] value of each color component.
         out << static_cast<int>(256 * Utils::clamp(color.X, 0.0, 0.999)) << ' '
             << static_cast<int>(256 * Utils::clamp(color.Y, 0.0, 0.999)) << ' '
             << static_cast<int>(256 * Utils::clamp(color.Z, 0.0, 0.999)) << '\n';
     }
+
+    void OutputImage(std::ostream &out, const Image& image) {
+        out << "P3\n" << image.Width << ' ' << image.Height << "\n255\n";
+        for (uint32_t y = 0; y < image.Height; y++) {
+            for (uint32_t x = 0; x < image.Width; x++) {
+                ImageUtils::WriteColor(out, image.Data[(y * image.Width) + x]);
+            }
+        }
+    }
 }
 
 void Renderer::Resize(uint32_t width, uint32_t height) {
-    if (m_ImageWidth == width && m_ImageHeight == height) {
+    if (m_Image.Width == width && m_Image.Height == height) {
         return;
     }
 
-    m_ImageWidth = width; 
-    m_ImageHeight = height;
-    m_AspectRatio = (double)width / height;
-
-    delete[] m_ImageData;
-    m_ImageData = new uint32_t[width * height];
+    delete[] m_Image.Data;
+    m_Image.Data = new Vec3[width * height];
+    m_Image.Width = width;
+    m_Image.Height = height;
+    m_Image.AspectRatio = (double)width / height;
 }
 
 void Renderer::Render(const Scene &scene, const Camera &camera) {
     m_ActiveScene = &scene;
     m_ActiveCamera = &camera;
 
-    std::cout << "P3\n" << m_ImageWidth << ' ' << m_ImageHeight << "\n255\n";
     // TODO: test multithreading
-    // (will need to store calculated data in temp array to maintain ordering)
-    for (uint32_t y = 0; y < m_ImageHeight; y++) {
-        std::cerr << "\rScanlines remaining: " << m_ImageHeight - 1 - y << ' ' << std::flush;
-        for (uint32_t x = 0; x < m_ImageWidth; x++) {
-            Vec3 color = RayGen(x, m_ImageHeight - y);
-            ColorUtils::WriteColor(std::cout, color);
+    for (uint32_t y = 0; y < m_Image.Height; y++) {
+        std::cerr << "\rScanlines remaining: " << m_Image.Height - 1 - y << ' ' << std::flush;
+        for (uint32_t x = 0; x < m_Image.Width; x++) {
+            Vec3 color = RayGen(x, m_Image.Height - y);
+            m_Image.Data[(y * m_Image.Width) + x] = color;
         }
     }
+
+    ImageUtils::OutputImage(std::cout, m_Image);
     std::cerr << "\nDone.\n";
 }
 
@@ -51,8 +59,8 @@ Vec3 Renderer::RayGen(uint32_t x, uint32_t y) {
 
     for (uint32_t i = 0; i < m_Samples; i++) {
         // u: -1 to aspectRatio, v: -1 to 1
-        double u = (2.0 * (double(x + RandomDouble()) / (m_ImageWidth - 1)) - 1.0) * m_AspectRatio;
-        double v = 2.0 * (double(y + RandomDouble()) / (m_ImageHeight)) - 1.0;
+        double u = (2.0 * (double(x + RandomDouble()) / (m_Image.Width - 1)) - 1.0) * m_Image.AspectRatio;
+        double v = 2.0 * (double(y + RandomDouble()) / (m_Image.Height)) - 1.0;
         Vec3 direction = Vec3(u, v, -m_ActiveCamera->FocalLength);
 
         Ray ray = Ray(m_ActiveCamera->Origin, direction);
