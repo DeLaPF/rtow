@@ -1,6 +1,7 @@
 #include "Renderer.h"
 
 #include "Math/Random.h"
+#include "Math/Timer.h"
 #include "Math/Utils.h"
 #include "Scene/SceneComponent.h"
 
@@ -49,6 +50,7 @@ void Renderer::Render(const Scene &scene, const Camera &camera) {
     m_ActiveScene = &scene;
     m_ActiveCamera = &camera;
 
+    Timer timer;
 #define MT 1
 #if MT
     std::for_each(std::execution::par, m_Image.VerticalIter.begin(), m_Image.VerticalIter.end(),
@@ -71,7 +73,9 @@ void Renderer::Render(const Scene &scene, const Camera &camera) {
     }
 #endif
 
+    std::cerr << "\nGenerated in: " << timer.ElapsedSeconds() << "s\n";
     ImageUtils::OutputImage(std::cout, m_Image);
+    std::cerr << "\nWritten in: " << timer.ElapsedSeconds() << "s\n";
     std::cerr << "\nDone.\n";
 }
 
