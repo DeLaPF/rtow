@@ -19,6 +19,18 @@ if (CMAKE_GENERATOR STREQUAL "MinGW Makefiles")
     message(STATUS "using mingw at: ${MINGW_PATH}")
 endif()
 
+# oneTBB
+if (WIN32)
+    if (NOT TBB_PATH)
+        message(FATAL_ERROR "TBB_PATH not set in .env.cmake")
+    endif()
+    set(TBB_LIB "${TBB_PATH}/lib/intel64/vc14")
+    #set(TBB_LIB "${TBB_PATH}/redist/intel64/vc14")
+    message(STATUS "Using oneTBB path specified in .env")
+else()
+    add_subdirectory(${PROJECT_SOURCE_DIR}/libs/oneTBB EXCLUDE_FROM_ALL)
+endif()
+
 # Rtve
 message(STATUS "ADDING ${PROJECT_NAME}")
 file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp)
@@ -28,11 +40,17 @@ add_executable(${PROJECT_NAME}
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${PROJECT_SOURCE_DIR}/src
 )
-#if (WIN32)
+#target_link_directories(${PROJECT_NAME} PUBLIC
+#    ${TBB_LIB}
+#)
+if (WIN32)
     target_link_libraries(${PROJECT_NAME} PUBLIC
+        #${TBB_LIB}
+        #tbb
         -static
     )
-#else()
-#    target_link_libraries(${PROJECT_NAME} PUBLIC
-#    )
-#endif()
+else()
+    target_link_libraries(${PROJECT_NAME} PUBLIC
+        tbb
+    )
+endif()
