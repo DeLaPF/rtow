@@ -5,9 +5,7 @@
 #include "Math/Utils.h"
 #include "Scene/SceneComponent.h"
 
-#include <cstdint>
-#include <execution>
-#include <iostream>
+#include <thread>
 
 namespace ImageUtils {
     void WriteColor(std::ostream &out, Vec3 color) {
@@ -37,13 +35,6 @@ void Renderer::Resize(uint32_t width, uint32_t height) {
     m_Image.Width = width;
     m_Image.Height = height;
     m_Image.AspectRatio = (double)width / height;
-    m_Image.HorizontalIter.resize(width);
-    m_Image.VerticalIter.resize(height);
-    for (uint32_t i = 0; i < width; i++)
-        m_Image.HorizontalIter[i] = i;
-    for (uint32_t i = 0; i < height; i++)
-        m_Image.VerticalIter[i] = i;
-
 }
 
 void Renderer::Render(const Scene &scene, const Camera &camera) {
@@ -53,16 +44,18 @@ void Renderer::Render(const Scene &scene, const Camera &camera) {
     Timer timer;
 #define MT 1
 #if MT
-    std::for_each(std::execution::par, m_Image.VerticalIter.begin(), m_Image.VerticalIter.end(),
-    [this](uint32_t y)
-    {
-        std::for_each(std::execution::par, m_Image.HorizontalIter.begin(), m_Image.HorizontalIter.end(),
-        [this, y](uint32_t x)
-        {
-            Vec3 color = RayGen(x, m_Image.Height - y);
-            m_Image.Data[(y * m_Image.Width) + x] = color;
-        });
-    });
+    std::vector<std::thread> threads;
+    for (uint32_t y = 0; y < m_Image.Height; y++) {
+        threads.push_back(std::thread([this, y]() -> void {
+            for (uint32_t x = 0; x < m_Image.Width; x++) {
+                Vec3 color = RayGen(x, m_Image.Height - y);
+                m_Image.Data[(y * m_Image.Width) + x] = color;
+            }
+        }));
+    }
+    for (auto& thread : threads) {
+        thread.join();
+    }
 #else
     for (uint32_t y = 0; y < m_Image.Height; y++) {
         std::cerr << "\rScanlines remaining: " << m_Image.Height - 1 - y << ' ' << std::flush;
