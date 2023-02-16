@@ -3,9 +3,9 @@
 HitResult Sphere::Hit(const Ray& ray, double distMin, double distMax) const {
     HitResult res;
     Vec3 camOffset = ray.Origin - Origin;
-    double a = dot(ray.Direction , ray.Direction);
-    double b = 2.0 * dot(camOffset, ray.Direction);
-    double c = dot(camOffset, camOffset) - Radius * Radius;
+    double a = Vec3Util::dot(ray.Direction , ray.Direction);
+    double b = 2.0 * Vec3Util::dot(camOffset, ray.Direction);
+    double c = Vec3Util::dot(camOffset, camOffset) - Radius * Radius;
     double discriminant = b * b - (4 * a * c);
     if (discriminant < 0.0) {
         return res;

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Random.h"
+
 #include <cmath>
 #include <iostream>
 
@@ -33,7 +35,6 @@ class Vec3 {
         double Z;
 };
 
-// Utility Functions
 inline std::ostream& operator<<(std::ostream &out, const Vec3 &v) {
     return out << v.X << ' ' << v.Y << ' ' << v.Z;
 }
@@ -62,18 +63,34 @@ inline Vec3 operator/(Vec3 v, double t) {
     return (1/t) * v;
 }
 
-inline double dot(const Vec3 &u, const Vec3 &v) {
-    return u.X * v.X
-         + u.Y * v.Y
-         + u.Z * v.Z;
-}
+// Utility Functions
+namespace Vec3Util {
+    inline double dot(const Vec3 &u, const Vec3 &v) {
+        return u.X * v.X
+             + u.Y * v.Y
+             + u.Z * v.Z;
+    }
 
-inline Vec3 cross(const Vec3 &u, const Vec3 &v) {
-    return Vec3(u.Y * v.Z - u.Z * v.Y,
-                u.Z * v.X - u.X * v.Z,
-                u.X * v.Y - u.Y * v.X);
-}
+    inline Vec3 cross(const Vec3 &u, const Vec3 &v) {
+        return Vec3(u.Y * v.Z - u.Z * v.Y,
+                    u.Z * v.X - u.X * v.Z,
+                    u.X * v.Y - u.Y * v.X);
+    }
 
-inline Vec3 normalize(Vec3 v) {
-    return v / std::sqrt(dot(v, v));
+    inline Vec3 normalize(Vec3 v) {
+        return v / std::sqrt(dot(v, v));
+    }
+
+    inline Vec3 random(double min, double max) {
+        while (true) {
+            Vec3 rand = Vec3(RandomDouble(min, max), RandomDouble(min, max), RandomDouble(min, max));
+            if (dot(rand, rand) < 1) {
+                return normalize(rand);
+            }
+        }
+    }
+
+    inline Vec3 random() {
+        return random(-1, 1);
+    }
 }

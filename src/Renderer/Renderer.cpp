@@ -84,7 +84,7 @@ Vec3 Renderer::RayGen(uint32_t x, uint32_t y) {
         Ray ray = Ray(m_ActiveCamera->Origin, direction);
         HitResult res = m_ActiveScene->RayCast(ray, 0.0, std::numeric_limits<double>::infinity());
         if (!res.DidHit) { // Miss
-            Vec3 direction = normalize(ray.Direction);
+            Vec3 direction = Vec3Util::normalize(ray.Direction);
             double t = 0.5 * (direction.Y + 1.0);
             color += ((1.0 - t) * Vec3(1.0, 1.0, 1.0)) + (t * Vec3(0.5, 0.7, 1.0)); //Lerp
         } else {
