@@ -23,12 +23,13 @@ class Renderer {
 
         void Render(const Scene& scene, const Camera& camera);
     private:
-        Vec3 RayGen(uint32_t x, uint32_t y);
+        Vec3 RayGen(double u, double v);
 
-        HitResult TraceRay(const Ray& ray);
+        Vec3 RTOWColor(const Ray& ray, uint32_t bounces);
     private:
         Image m_Image{nullptr, 0, 0, 0.0};
         uint32_t m_Samples = 100;
+        uint32_t m_Bounces = 50;
 
         const Scene* m_ActiveScene = nullptr;
         const Camera* m_ActiveCamera = nullptr;
