@@ -1,3 +1,5 @@
 # RTOW (Ray Tracing in One Weekend)
 ## View genererated `.ppm` files [online](https://www.cs.rhodes.edu/welshc/COMP141_F16/ppmReader.html)
 ![canvas](https://user-images.githubusercontent.com/32921710/217900492-e59dedb7-a01d-4d7c-a435-d6174e44a294.png)
+![CubeSampleDistribution](https://user-images.githubusercontent.com/32921710/219770530-2e88fa34-ad59-46c2-a439-0552102a36e6.png)
+![SingleBounceRoughnessAfterReflection](https://user-images.githubusercontent.com/32921710/219770364-f32d757c-c8ab-4486-a8d6-67f46184b225.png)
