@@ -17,5 +17,13 @@ struct HitResult {
 
 class SceneComponent {
     public:
-        virtual HitResult Hit(const Ray& r, double hitDistMin, double hitDistMax) const = 0;
+        SceneComponent() : WorldLocation(Vec3()) {}
+        SceneComponent(const Vec3& location) : WorldLocation(location) {}
+
+        virtual Vec3& GetWorldLocation() { return WorldLocation; }
+        virtual void SetWorldLocation(const Vec3& location) { WorldLocation = location; }
+
+        virtual HitResult GetHitResult(const Ray& r, double hitDistMin, double hitDistMax) const = 0;
+    protected:
+        Vec3 WorldLocation;
 };

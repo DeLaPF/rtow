@@ -1,8 +1,8 @@
 #include "Sphere.h"
 
-HitResult Sphere::Hit(const Ray& ray, double distMin, double distMax) const {
+HitResult Sphere::GetHitResult(const Ray& ray, double distMin, double distMax) const {
     HitResult res;
-    Vec3 camOffset = ray.Origin - Origin;
+    Vec3 camOffset = ray.Origin - WorldLocation;
     double a = Vec3Util::dot(ray.Direction , ray.Direction);
     double b = 2.0 * Vec3Util::dot(camOffset, ray.Direction);
     double c = Vec3Util::dot(camOffset, camOffset) - Radius * Radius;
@@ -24,7 +24,7 @@ HitResult Sphere::Hit(const Ray& ray, double distMin, double distMax) const {
     res.DidHit = true;
     res.HitDistance = nearT;
     res.WorldLocation = ray.At(nearT);
-    res.WorldNormal = (res.WorldLocation - Origin) / Radius;
+    res.WorldNormal = (res.WorldLocation - WorldLocation) / Radius;
 
     return res;
 }
