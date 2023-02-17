@@ -9,6 +9,8 @@ struct HitResult {
     Vec3 WorldNormal = Vec3();
     bool IsFrontFace = false;
 
+    int HitIndex = -1;
+
     inline void set_face_normal(const Ray& ray, const Vec3& outwardNormal) {
         IsFrontFace = Vec3Util::dot(ray.Direction, outwardNormal) < 0;
         WorldNormal = IsFrontFace ? outwardNormal : -outwardNormal;
@@ -17,13 +19,21 @@ struct HitResult {
 
 class SceneComponent {
     public:
-        SceneComponent() : WorldLocation(Vec3()) {}
-        SceneComponent(const Vec3& location) : WorldLocation(location) {}
+        SceneComponent() : m_WorldLocation(Vec3()) {}
+        SceneComponent(const Vec3& location, int materialIndex)
+            : m_WorldLocation(location), m_MaterialIndex(materialIndex) {}
 
-        virtual Vec3& GetWorldLocation() { return WorldLocation; }
-        virtual void SetWorldLocation(const Vec3& location) { WorldLocation = location; }
+        virtual Vec3& GetWorldLocation() { return m_WorldLocation; }
+        virtual void SetWorldLocation(const Vec3& location) { m_WorldLocation = location; }
 
-        virtual HitResult GetHitResult(const Ray& r, double hitDistMin, double hitDistMax) const = 0;
+        virtual int GetMaterialIndex() { return m_MaterialIndex; }
+        virtual void SetMaterialIndex(int index) { m_MaterialIndex = index; }
+
+        virtual HitResult GetHitResult(const Ray& r, double hitDistMin, double hitDistMax) const {
+            HitResult defaultRes;
+            return defaultRes;
+        }
     protected:
-        Vec3 WorldLocation;
+        Vec3 m_WorldLocation;
+        int m_MaterialIndex = 0;
 };

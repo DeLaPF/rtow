@@ -81,16 +81,24 @@ namespace Vec3Util {
         return v / std::sqrt(dot(v, v));
     }
 
+    inline Vec3 reflect(const Vec3& v, const Vec3& reflectionAxis) {
+        return v - (2 * (dot(v, reflectionAxis) * reflectionAxis));
+    }
+
     inline Vec3 random(double min, double max) {
-        while (true) {
-            Vec3 rand = Vec3(RandomDouble(min, max), RandomDouble(min, max), RandomDouble(min, max));
-            if (dot(rand, rand) < 1) {
-                return normalize(rand);
-            }
-        }
+        return normalize(Vec3(Random::Double(min, max), Random::Double(min, max), Random::Double(min, max)));
     }
 
     inline Vec3 random() {
         return random(-1, 1);
+    }
+
+    inline Vec3 randomBounce(const Vec3& normal) {
+        Vec3 rand = random();
+        if (dot(rand, normal) <= 0.0) {
+            rand = -rand;
+        }
+
+        return rand;
     }
 }

@@ -23,9 +23,9 @@ class Renderer {
 
         void Render(const Scene& scene, const Camera& camera);
     private:
-        Vec3 RayGen(double u, double v);
+        Vec3 RayGen(uint32_t x, uint32_t y);
 
-        Vec3 RTOWColor(const Ray& ray, uint32_t bounces);
+        Vec3 TraceRay(const Ray& ray, uint32_t bounces);
     private:
         Image m_Image{nullptr, 0, 0, 0.0};
         uint32_t m_Samples = 100;

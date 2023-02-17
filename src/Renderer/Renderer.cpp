@@ -5,6 +5,7 @@
 #include "Math/Utils.h"
 #include "Scene/SceneComponent.h"
 
+#include <cstdint>
 #include <thread>
 
 namespace ImageUtils {
@@ -47,16 +48,7 @@ void Renderer::Render(const Scene &scene, const Camera &camera) {
     for (uint32_t y = 0; y < m_Image.Height; y++) {
         threads.push_back(std::thread([this, y]() -> void {
             for (uint32_t x = 0; x < m_Image.Width; x++) {
-                Vec3 color = Vec3();
-                for (uint32_t i = 0; i < m_Samples; i++) {
-                    // u: -1 to aspectRatio (left to right), v: -1 to 1 (top to bottom)
-                    double u = (2.0 * ((x + RandomDouble()) / (m_Image.Width - 1.0)) - 1.0) * m_Image.AspectRatio;
-                    double v = 2.0 * ((m_Image.Height - y + RandomDouble()) / m_Image.Height) - 1.0;
-                    //color += RayGen(u, v) / m_Samples;
-                    Ray ray = Ray(m_ActiveCamera->Origin, Vec3(u, v, -m_ActiveCamera->FocalLength));
-                    color += RTOWColor(ray, 0) / m_Samples;
-                }
-                m_Image.Data[(y * m_Image.Width) + x] = color;
+                m_Image.Data[(y * m_Image.Width) + x] = RayGen(x, y);
             }
         }));
     }
@@ -70,28 +62,21 @@ void Renderer::Render(const Scene &scene, const Camera &camera) {
     std::cerr << "\nDone.\n";
 }
 
-Vec3 Renderer::RayGen(double u, double v) {
+Vec3 Renderer::RayGen(uint32_t x, uint32_t y) {
     Vec3 color = Vec3();
-    double multiplier = 1.0;
-    Ray ray = Ray(m_ActiveCamera->Origin, Vec3(u, v, -m_ActiveCamera->FocalLength));
-    for (uint32_t i = 0; i < m_Bounces; i++) {
-        HitResult res = m_ActiveScene->RayCast(ray, 0.0001, std::numeric_limits<double>::infinity());
-        if (!res.DidHit) { // Miss
-            Vec3 direction = Vec3Util::normalize(ray.Direction);
-            double t = 0.5 * (direction.Y + 1.0);
-            color += (((1.0 - t) * Vec3(1.0, 1.0, 1.0)) + (t * Vec3(0.5, 0.7, 1.0))) * multiplier; //Lerp
-            break;
-        }
+    for (uint32_t i = 0; i < m_Samples; i++) {
+        // u: -1 to aspectRatio (left to right), v: -1 to 1 (top to bottom)
+        double u = (2.0 * ((x + Random::Double()) / (m_Image.Width - 1.0)) - 1.0) * m_Image.AspectRatio;
+        double v = 2.0 * ((m_Image.Height - y + Random::Double()) / m_Image.Height) - 1.0;
+        Ray ray = Ray(m_ActiveCamera->Origin, Vec3(u, v, -m_ActiveCamera->FocalLength));
 
-        color += res.WorldNormal * multiplier;
-        ray = Ray(res.WorldLocation, res.WorldNormal + Vec3Util::random(-0.5, 0.5));
-        multiplier *= 0.5;
+        color += TraceRay(ray, 0) / m_Samples;
     }
 
     return color;
 }
 
-Vec3 Renderer::RTOWColor(const Ray& ray, uint32_t bounces) {
+Vec3 Renderer::TraceRay(const Ray& ray, uint32_t bounces) {
     if (bounces >= m_Bounces) {
         return Vec3();
     }
@@ -103,5 +88,9 @@ Vec3 Renderer::RTOWColor(const Ray& ray, uint32_t bounces) {
         return ((1.0 - t) * Vec3(1.0, 1.0, 1.0)) + (t * Vec3(0.5, 0.7, 1.0)); //Lerp
     }
 
-    return 0.5 * RTOWColor(Ray(res.WorldLocation, res.WorldNormal + Vec3Util::random(-0.5, 0.5)), ++bounces);
+    const auto& hitComponent = m_ActiveScene->GetComponent(res.HitIndex);
+    const auto& hitMaterial = m_ActiveScene->GetMaterial(hitComponent->GetMaterialIndex());
+    Ray bounced = Ray(res.WorldLocation, hitMaterial->GetBounce(ray.Direction, res.WorldNormal));
+
+    return hitMaterial->Albedo * TraceRay(bounced, ++bounces);
 }
