@@ -5,34 +5,138 @@
 #include <cmath>
 #include <iostream>
 
-class Vec3 {
-    public:
-        Vec3() : X(0), Y(0), Z(0) {}
-        Vec3(double x, double y, double z) : X(x), Y(y), Z(z) {}
+class Vec {
+public:
+    Vec() : X(0.0), size(1) {
+        vec = &X;
+    }
+    Vec(double x) : X(x), size(1) {
+        vec = &X;
+    }
 
-        Vec3 operator-() const { return Vec3(-X, -Y, -Z); }
-        Vec3& operator+=(const Vec3 &v) {
-            X += v.X;
-            Y += v.Y;
-            Z += v.Z;
-            return *this;
-        }
+    size_t length() const { return size; }
 
-        Vec3& operator*=(const double t) {
-            X *= t;
-            Y *= t;
-            Z *= t;
-            return *this;
-        }
+    double operator[](int i) const { return vec[i]; }
+    double& operator[](int i) { return vec[i]; }
+    void operator=(const Vec& v) const {
+        for (size_t i = 0; i < size && i < v.length(); i++) { vec[i] = v[i]; }
+    }
+    Vec operator-() const {
+        Vec res = Vec(size);
+        for (size_t i = 0; i < size; i++) { res[i] = -vec[i]; }
+        return res;
+    }
+    auto& operator+=(const Vec& v) {
+        for (size_t i = 0; i < size && i < v.size; i++) { vec[i] += v[i]; }
+        return *this;
+    }
+    auto& operator*=(const double t) {
+        for (size_t i = 0; i < size; i++) { vec[i] *= t; }
+        return *this;
+    }
+    auto& operator/=(const double t) {
+        for (size_t i = 0; i < size; i++) { vec[i] /= t; }
+        return *this;
+    }
+public:
+    union {
+        struct {
+            double X;
+        };
+        struct {
+            double R;
+        };
+    };
+protected:
+    size_t size;
+    double* vec;
+};
 
-        Vec3& operator/=(const double t) {
-            return *this *= 1/t;
-        }
+class Vec2 : public Vec {
+public:
+    Vec2() : X(0.0), Y(0.0) {
+        size = 2;
+        vec = &X;
+    }
+    Vec2(double x, double y) : X(0.0), Y(0.0) {
+        size = 2;
+        vec = &X;
+    }
 
-    public:
-        double X;
-        double Y;
-        double Z;
+    Vec2 operator-() const {
+        Vec2 res = Vec2();
+        for (size_t i = 0; i < size; i++) { res[i] = -vec[i]; }
+        return res;
+    }
+public:
+    union {
+        struct {
+            double X, Y;
+        };
+        struct {
+            double R, G;
+        };
+    };
+};
+
+class Vec3 : public Vec {
+public:
+    Vec3() : X(0.0), Y(0.0), Z(0.0) {
+        size = 3;
+        vec = &X;
+    }
+    Vec3(double x, double y, double z) :  X(x), Y(y), Z(z) {
+        size = 3;
+        vec = &X;
+    }
+
+    Vec3 operator-() const {
+        Vec3 res = Vec3();
+        for (size_t i = 0; i < size; i++) { res[i] = -vec[i]; }
+        return res;
+    }
+public:
+    union {
+        struct {
+            double X, Y, Z;
+        };
+        struct {
+            double R, G, B;
+        };
+    };
+};
+
+class Vec4 : public Vec {
+public:
+    Vec4() : Vec((size_t)4) {}
+    Vec4(double x, double y, double z, double w) : Vec((size_t)4) {
+        vec[0] = x;
+        vec[1] = y;
+        vec[2] = z;
+        vec[3] = w;
+    }
+
+    Vec4 operator-() const {
+        Vec4 res = Vec4();
+        for (size_t i = 0; i < size; i++) { res[i] = -vec[i]; }
+        return res;
+    }
+public:
+    union {
+        double* vec;
+        struct {
+            double X;
+            double Y;
+            double Z;
+            double W;
+        };
+        struct {
+            double R;
+            double G;
+            double B;
+            double A;
+        };
+    };
 };
 
 inline std::ostream& operator<<(std::ostream &out, const Vec3 &v) {
