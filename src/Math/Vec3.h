@@ -108,12 +108,13 @@ public:
 
 class Vec4 : public Vec {
 public:
-    Vec4() : Vec((size_t)4) {}
-    Vec4(double x, double y, double z, double w) : Vec((size_t)4) {
-        vec[0] = x;
-        vec[1] = y;
-        vec[2] = z;
-        vec[3] = w;
+    Vec4() : X(0.0), Y(0.0), Z(0.0), W(0.0) {
+        size = 4;
+        vec = &X;
+    }
+    Vec4(double x, double y, double z, double w) :  X(x), Y(y), Z(z), W(w) {
+        size = 4;
+        vec = &X;
     }
 
     Vec4 operator-() const {
@@ -123,28 +124,45 @@ public:
     }
 public:
     union {
-        double* vec;
         struct {
-            double X;
-            double Y;
-            double Z;
-            double W;
+            double X, Y, Z, W;
         };
         struct {
-            double R;
-            double G;
-            double B;
-            double A;
+            double R, G, B, A;
         };
     };
 };
 
-inline std::ostream& operator<<(std::ostream &out, const Vec3 &v) {
-    return out << v.X << ' ' << v.Y << ' ' << v.Z;
+template<typename T,
+    typename = typename std::enable_if<
+        std::is_same_v<T, Vec> &&
+        std::is_same_v<T, Vec2> &&
+        std::is_same_v<T, Vec3> &&
+        std::is_same_v<T, Vec4>
+    >::type
+>
+inline std::ostream& operator<<(std::ostream& out, const T& v) {
+    std::string data;
+    for (size_t i = 0; i < v.length(); i++) {
+        data.append("%d ", v[i]);
+    }
+    return out << data;
 }
 
-inline Vec3 operator+(const Vec3 &u, const Vec3 &v) {
-    return Vec3(u.X + v.X, u.Y + v.Y, u.Z + v.Z);
+template<typename T ,
+    typename = typename std::enable_if<
+        std::is_base_of<Vec, T>::value
+    >::type
+>
+inline T operator+(const T& u, const T& v) {
+    double vec[4] = { 0.0, 0.0, 0.0, 0.0 };
+    for (size_t i = 0; i < u.length(); i++) { vec[i] = u[i]; }
+    for (size_t i = 0; i < v.length(); i++) { vec[i] += v[i]; }
+
+    if constexpr (std::is_same_v<T, Vec>) { return Vec(vec[0]); }
+    if constexpr (std::is_same_v<T, Vec2>) { return Vec2(vec[0], vec[1]); }
+    if constexpr (std::is_same_v<T, Vec3>) { return Vec3(vec[0], vec[1], vec[2]); }
+    if constexpr (std::is_same_v<T, Vec3>) { return Vec4(vec[0], vec[1], vec[2], vec[3]); }
 }
 
 inline Vec3 operator-(const Vec3 &u, const Vec3 &v) {
