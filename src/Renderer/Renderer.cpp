@@ -5,7 +5,6 @@
 #include "Math/Utils.h"
 #include "Scene/SceneComponent.h"
 
-#include <cstdint>
 #include <thread>
 
 namespace ImageUtils {

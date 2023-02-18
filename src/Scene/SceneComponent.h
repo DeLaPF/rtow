@@ -29,10 +29,7 @@ class SceneComponent {
         virtual int GetMaterialIndex() { return m_MaterialIndex; }
         virtual void SetMaterialIndex(int index) { m_MaterialIndex = index; }
 
-        virtual HitResult GetHitResult(const Ray& r, double hitDistMin, double hitDistMax) const {
-            HitResult defaultRes;
-            return defaultRes;
-        }
+        virtual HitResult GetHitResult(const Ray& r, double hitDistMin, double hitDistMax) const { return HitResult{}; }
     protected:
         Vec3 m_WorldLocation;
         int m_MaterialIndex = 0;
