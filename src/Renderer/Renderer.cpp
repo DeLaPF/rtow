@@ -2,6 +2,7 @@
 
 #include "Math/Random.h"
 
+#include <atomic>
 #include <thread>
 
 namespace ImageUtils {
@@ -23,12 +24,14 @@ Image& Renderer::Render(const Scene &scene, const Camera &camera) {
     m_ActiveScene = &scene;
     m_ActiveCamera = &camera;
 
+    static std::atomic_int progress = 0;
     std::vector<std::thread> threads;
     for (uint32_t y = 0; y < m_Image.Height; y++) {
         threads.push_back(std::thread([this, y]() -> void {
             for (uint32_t x = 0; x < m_Image.Width; x++) {
                 m_Image.Data[(y * m_Image.Width) + x] = RayGen(x, y);
             }
+            std::cerr << "\rScanlines remaining: " << m_Image.Height - ++progress << " " << std::flush;
         }));
     }
     for (auto& thread : threads) {
