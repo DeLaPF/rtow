@@ -1,29 +1,10 @@
 #include "Renderer.h"
 
 #include "Math/Random.h"
-#include "Math/Timer.h"
-#include "Math/Utils.h"
-#include "Scene/SceneComponent.h"
 
 #include <thread>
 
 namespace ImageUtils {
-    void WriteColor(std::ostream &out, Vec3 color) {
-        // Write the translated [0,255] value of each color component.
-        // Gamma Correct: color = (color)^(1/gamma) (we use gamma = 2.0)
-        out << static_cast<int>(256 * Utils::clamp(std::sqrt(color.X), 0.0, 0.999)) << ' '
-            << static_cast<int>(256 * Utils::clamp(std::sqrt(color.Y), 0.0, 0.999)) << ' '
-            << static_cast<int>(256 * Utils::clamp(std::sqrt(color.Z), 0.0, 0.999)) << '\n';
-    }
-
-    void OutputImage(std::ostream &out, const Image& image) {
-        out << "P3\n" << image.Width << ' ' << image.Height << "\n255\n";
-        for (uint32_t y = 0; y < image.Height; y++) {
-            for (uint32_t x = 0; x < image.Width; x++) {
-                ImageUtils::WriteColor(out, image.Data[(y * image.Width) + x]);
-            }
-        }
-    }
 }
 
 void Renderer::Resize(uint32_t width, uint32_t height) {
@@ -38,8 +19,7 @@ void Renderer::Resize(uint32_t width, uint32_t height) {
     m_Image.AspectRatio = (double)width / height;
 }
 
-void Renderer::Render(const Scene &scene, const Camera &camera) {
-    Timer timer;
+Image& Renderer::Render(const Scene &scene, const Camera &camera) {
     m_ActiveScene = &scene;
     m_ActiveCamera = &camera;
 
@@ -55,10 +35,7 @@ void Renderer::Render(const Scene &scene, const Camera &camera) {
         thread.join();
     }
 
-    std::cerr << "\nGenerated in: " << timer.ElapsedSeconds() << "s\n";
-    ImageUtils::OutputImage(std::cout, m_Image);
-    std::cerr << "\nWritten in: " << timer.ElapsedSeconds() << "s\n";
-    std::cerr << "\nDone.\n";
+    return m_Image;
 }
 
 Vec3 Renderer::RayGen(uint32_t x, uint32_t y) {
