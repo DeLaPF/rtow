@@ -7,6 +7,7 @@
 #include "Math/Utils.h"
 #include "Math/Vec3.h"
 
+#include <cstdint>
 #include <fstream>
 #include <memory>
 #include <string>
@@ -26,9 +27,6 @@ void OutputFrame(std::ostream &out, const Image& frame) {
 }
 
 int main(int argc, char* argv[]) {
-    // Camera
-    Camera camera = Camera();
-
     // Scene
     Scene scene = Scene();
     scene.addMaterial(std::make_shared<Material>(Material(Vec3(0.8, 0.8, 0.0), 0.5)));
@@ -41,9 +39,16 @@ int main(int argc, char* argv[]) {
     scene.addComponent(std::make_shared<Sphere>(Vec3(-1.0, 0, 0), -0.4, 2));
     scene.addComponent(std::make_shared<Sphere>(Vec3(1.0, 0, 0), 0.5, 3));
 
+    // Image
+    uint32_t imageWidth = 1280, imageHeight = 720;
+
+    // Camera
+    Camera camera = Camera();
+    camera.Resize(imageWidth, imageHeight);
+
     // Renderer
     Renderer renderer = Renderer();
-    renderer.Resize(1280, 720);
+    renderer.Resize(imageWidth, imageHeight);
 
     // Render
     Timer timer;

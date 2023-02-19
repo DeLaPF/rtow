@@ -44,12 +44,7 @@ Image& Renderer::Render(const Scene &scene, const Camera &camera) {
 Vec3 Renderer::RayGen(uint32_t x, uint32_t y) {
     Vec3 color = Vec3();
     for (uint32_t i = 0; i < m_Samples; i++) {
-        // u: -1 to aspectRatio (left to right), v: -1 to 1 (top to bottom)
-        double u = (2.0 * ((x + Random::Double()) / (m_Image.Width - 1.0)) - 1.0) * m_Image.AspectRatio;
-        double v = 2.0 * ((m_Image.Height - y + Random::Double()) / m_Image.Height) - 1.0;
-        Ray ray = Ray(m_ActiveCamera->Origin, Vec3(u, v, -m_ActiveCamera->FocalLength));
-
-        color += TraceRay(ray, 0) / m_Samples;
+        color += TraceRay(m_ActiveCamera->GetRay(x, y), 0) / m_Samples;
     }
 
     return color;
