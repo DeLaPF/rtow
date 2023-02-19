@@ -69,7 +69,7 @@ Vec3 Renderer::TraceRay(const Ray& ray, uint32_t bounces) {
 
     const auto& hitComponent = m_ActiveScene->GetComponent(res.HitIndex);
     const auto& hitMaterial = m_ActiveScene->GetMaterial(hitComponent->GetMaterialIndex());
-    Ray bounced = Ray(res.WorldLocation, hitMaterial->GetBounce(ray.Direction, res.WorldNormal));
+    Ray bounced = Ray(res.WorldLocation, hitMaterial->GetBounce(ray.Direction, res.WorldNormal, res.IsFrontFace));
 
     return hitMaterial->Albedo * TraceRay(bounced, ++bounces);
 }
