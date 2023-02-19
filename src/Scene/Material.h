@@ -5,7 +5,9 @@
 class Material {
     public:
         Material()
-            : Albedo(Vec3()), Roughness(0.5), Metallic(1.0), IndexOfRefraction(1.0) {}
+            : Albedo(Vec3()), Roughness(1), Metallic(1.0), IndexOfRefraction(1.0) {}
+        Material(Vec3 albedo)
+            : Albedo(albedo), Roughness(1), Metallic(1.0), IndexOfRefraction(1.0) {}
         Material(Vec3 albedo, double roughness)
             : Albedo(albedo), Roughness(roughness), Metallic(1.0), IndexOfRefraction(1.0) {}
         Material(Vec3 albedo, double roughness, double metallic, double indexOfRefraction)

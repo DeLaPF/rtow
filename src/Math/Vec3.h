@@ -15,12 +15,22 @@ public:
         vec = &X;
     }
 
-    size_t length() const { return size; }
+    double length() const {
+        return std::sqrt(lengthSquared());
+    }
+
+    double lengthSquared() const {
+        double lengthSquared = 0.0;
+        for (size_t i = 0; i < size; i++) { lengthSquared += vec[i] * vec[i]; }
+        return lengthSquared;
+    }
+
+    size_t type() const { return size; }
 
     double operator[](int i) const { return vec[i]; }
     double& operator[](int i) { return vec[i]; }
     void operator=(const Vec& v) const {
-        for (size_t i = 0; i < size && i < v.length(); i++) { vec[i] = v[i]; }
+        for (size_t i = 0; i < size && i < v.type(); i++) { vec[i] = v[i]; }
     }
     Vec operator-() const {
         Vec res = Vec(size);
@@ -137,7 +147,7 @@ public:
 // TODO: generalize input and output for all below to all Vec classes
 inline std::ostream& operator<<(std::ostream& out, const Vec3& v) {
     std::ostringstream oss;
-    for (size_t i = 0; i < v.length(); i++) {
+    for (size_t i = 0; i < v.type(); i++) {
         oss << v[i] << ", ";
     }
     return out << oss.str();
@@ -145,8 +155,8 @@ inline std::ostream& operator<<(std::ostream& out, const Vec3& v) {
 
 inline Vec3 operator+(const Vec3& u, const Vec3& v) {
     double vec[4] = { 0.0, 0.0, 0.0, 0.0 };
-    for (size_t i = 0; i < u.length(); i++) { vec[i] = u[i]; }
-    for (size_t i = 0; i < v.length(); i++) { vec[i] += v[i]; }
+    for (size_t i = 0; i < u.type(); i++) { vec[i] = u[i]; }
+    for (size_t i = 0; i < v.type(); i++) { vec[i] += v[i]; }
 
     return Vec3(vec[0], vec[1], vec[2]);
 }
