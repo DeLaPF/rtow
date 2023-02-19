@@ -45,6 +45,7 @@ int main(int argc, char* argv[]) {
     // Camera
     Camera camera = Camera();
     camera.Resize(imageWidth, imageHeight);
+    camera.SetView(Vec3(-2, 2, 1), Vec3(0, 0, 0));
 
     // Renderer
     Renderer renderer = Renderer();

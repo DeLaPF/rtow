@@ -7,8 +7,7 @@
 
 class Camera {
     public:
-        Camera() : Origin(Vec3(0, 0, 1)) {}
-        Camera(Vec3 location) : Origin(location) {}
+        Camera() {}
 
         void Resize(uint32_t width, uint32_t height) {
             if (width == m_ViewportWidth && height == m_ViewportHeight) {
@@ -20,13 +19,13 @@ class Camera {
             m_ViewportAspectRatio = (double)width / height;
         }
 
-        void Resize(uint32_t width, uint32_t height, double fov) {
-            Resize(width, height);
-            if (fov == m_FOV) {
-                return;
-            }
+        void SetFOV(double fov) { m_FOV = fov; }
 
-            m_FOV = fov;
+        void SetView(const Vec3& location, const Vec3& lookAt) {
+            m_Origin = location;
+            m_ViewDir = Vec3Util::normalize(location - lookAt);
+            m_Right = Vec3Util::normalize(Vec3Util::cross(m_Up, m_ViewDir));
+            m_LocalUp = Vec3Util::cross(m_ViewDir, m_Right);
         }
 
         Ray GetRay(uint32_t x, uint32_t y) const {
@@ -36,12 +35,22 @@ class Camera {
             double u = (2.0 * ((x + Random::Double()) / (m_ViewportWidth - 1.0)) - 1.0) * m_ViewportAspectRatio * fovMul;
             double v = (2.0 * ((m_ViewportHeight - y + Random::Double()) / m_ViewportHeight) - 1.0) * fovMul;
 
-            return Ray(Origin, Vec3(u, v, -m_FocalLength));
+            // Vec3 direction = Vec3(u, v, -m_FocalLength);
+            // project direction from up = 0,1,0 and right = 1,0,0 to m_LocalUp and m_Right
+            Vec3 projectedU = u * m_Right;
+            Vec3 projectedV = v * m_LocalUp;
+            Vec3 projectedF = -m_FocalLength * m_ViewDir;
+            Vec3 projection = projectedU + projectedV + projectedF;
+
+            return Ray(m_Origin, projection);
         }
 
-    public:
-        Vec3 Origin;
     private:
+        const Vec3 m_Up = Vec3(0.0, 1.0, 0.0);
+        Vec3 m_Origin = Vec3(0.0, 0.0, 1.0);
+        Vec3 m_ViewDir = Vec3(0.0, 0.0, -1.0);
+        Vec3 m_LocalUp = Vec3(0.0, 1.0, 0.0);
+        Vec3 m_Right = Vec3(1.0, 0.0, 0.0);
         double m_FOV = 90.0;
         double m_FocalLength = 1.0;
         uint32_t m_ViewportWidth = 0, m_ViewportHeight = 0;
