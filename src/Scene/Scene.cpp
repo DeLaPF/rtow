@@ -1,7 +1,7 @@
 #include "Scene.h"
 
 std::shared_ptr<SceneComponent> Scene::GetComponent(int index) const {
-    if (m_Components.size() <= index || index < 0) {
+    if (index < 0 || index >= m_Components.size()) {
         return std::make_shared<SceneComponent>(SceneComponent());
     }
 
@@ -9,7 +9,7 @@ std::shared_ptr<SceneComponent> Scene::GetComponent(int index) const {
 }
 
 std::shared_ptr<Material> Scene::GetMaterial(int index) const {
-    if (m_Materials.size() <= index || index < 0) {
+    if (index < 0 || index >= m_Materials.size()) {
         return std::make_shared<Material>(Material());
     }
 

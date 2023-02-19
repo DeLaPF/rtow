@@ -24,7 +24,7 @@ HitResult Sphere::GetHitResult(const Ray& ray, double distMin, double distMax) c
     res.DidHit = true;
     res.HitDistance = nearT;
     res.WorldLocation = ray.At(nearT);
-    res.WorldNormal = (res.WorldLocation - m_WorldLocation) / Radius;
+    res.SetFaceNormal(ray, (res.WorldLocation - m_WorldLocation) / Radius);
 
     return res;
 }
