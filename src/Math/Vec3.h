@@ -133,15 +133,8 @@ public:
     };
 };
 
-template<typename T,
-    typename = typename std::enable_if<
-        std::is_same_v<T, Vec> &&
-        std::is_same_v<T, Vec2> &&
-        std::is_same_v<T, Vec3> &&
-        std::is_same_v<T, Vec4>
-    >::type
->
-inline std::ostream& operator<<(std::ostream& out, const T& v) {
+// TODO: generalize input and output for all below to all Vec classes
+inline std::ostream& operator<<(std::ostream& out, const Vec3& v) {
     std::string data;
     for (size_t i = 0; i < v.length(); i++) {
         data.append("%d ", v[i]);
@@ -149,20 +142,12 @@ inline std::ostream& operator<<(std::ostream& out, const T& v) {
     return out << data;
 }
 
-template<typename T ,
-    typename = typename std::enable_if<
-        std::is_base_of<Vec, T>::value
-    >::type
->
-inline T operator+(const T& u, const T& v) {
+inline Vec3 operator+(const Vec3& u, const Vec3& v) {
     double vec[4] = { 0.0, 0.0, 0.0, 0.0 };
     for (size_t i = 0; i < u.length(); i++) { vec[i] = u[i]; }
     for (size_t i = 0; i < v.length(); i++) { vec[i] += v[i]; }
 
-    if constexpr (std::is_same_v<T, Vec>) { return Vec(vec[0]); }
-    if constexpr (std::is_same_v<T, Vec2>) { return Vec2(vec[0], vec[1]); }
-    if constexpr (std::is_same_v<T, Vec3>) { return Vec3(vec[0], vec[1], vec[2]); }
-    if constexpr (std::is_same_v<T, Vec3>) { return Vec4(vec[0], vec[1], vec[2], vec[3]); }
+    return Vec3(vec[0], vec[1], vec[2]);
 }
 
 inline Vec3 operator-(const Vec3 &u, const Vec3 &v) {
