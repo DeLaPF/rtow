@@ -31,10 +31,10 @@ int main(int argc, char* argv[]) {
 
     // Scene
     Scene scene = Scene();
-    scene.addMaterial(std::make_shared<Material>(Material(Vec3(0.8, 0.8, 0.0), 1.0)));
-    scene.addMaterial(std::make_shared<Material>(Material(Vec3(0.7, 0.3, 0.3), 1.0)));
-    scene.addMaterial(std::make_shared<Material>(Material(Vec3(0.8, 0.8, 0.8), 0.3)));
-    scene.addMaterial(std::make_shared<Material>(Material(Vec3(0.8, 0.6, 0.2), 0.7)));
+    scene.addMaterial(std::make_shared<Material>(Material(Vec3(0.8, 0.8, 0.0), 0.5)));
+    scene.addMaterial(std::make_shared<Material>(Material(Vec3(0.7, 0.3, 0.3), 0.5)));
+    scene.addMaterial(std::make_shared<Material>(Material(Vec3(0.8, 0.8, 0.8), 0.2)));
+    scene.addMaterial(std::make_shared<Material>(Material(Vec3(0.8, 0.6, 0.2), 0.4)));
     scene.addComponent(std::make_shared<Sphere>(Vec3(0, -100.5, 0), 100, 0));
     scene.addComponent(std::make_shared<Sphere>(Vec3(0, 0, 0), 0.5, 1));
     scene.addComponent(std::make_shared<Sphere>(Vec3(-1.0, 0, 0), 0.5, 2));

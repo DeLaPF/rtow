@@ -8,7 +8,7 @@ class Material {
         Material(const Vec3& albedo, double roughness) : Albedo(albedo), Roughness(roughness) {}
 
         virtual Vec3 GetBounce(const Vec3& incoming, const Vec3& normal) const {
-            return Vec3Util::reflect(incoming, normal) + Roughness * Vec3Util::randomBounce(normal);
+            return ((1 - Roughness) * Vec3Util::reflect(incoming, normal)) + (Roughness * Vec3Util::randomBounce(normal));
         }
     
     public:
