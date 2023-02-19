@@ -20,7 +20,7 @@ struct HitResult {
 class SceneComponent {
     public:
         SceneComponent() : m_WorldLocation(Vec3()) {}
-        SceneComponent(const Vec3& location, int materialIndex)
+        SceneComponent(Vec3 location, int materialIndex)
             : m_WorldLocation(location), m_MaterialIndex(materialIndex) {}
 
         virtual Vec3& GetWorldLocation() { return m_WorldLocation; }

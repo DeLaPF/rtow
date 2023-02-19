@@ -6,9 +6,9 @@ class Material {
     public:
         Material()
             : Albedo(Vec3()), Roughness(0.5), Metallic(1.0), IndexOfRefraction(1.0) {}
-        Material(const Vec3& albedo, double roughness)
+        Material(Vec3 albedo, double roughness)
             : Albedo(albedo), Roughness(roughness), Metallic(1.0), IndexOfRefraction(1.0) {}
-        Material(const Vec3& albedo, double roughness, double metallic, double indexOfRefraction)
+        Material(Vec3 albedo, double roughness, double metallic, double indexOfRefraction)
             : Albedo(albedo), Roughness(roughness), Metallic(metallic), IndexOfRefraction(indexOfRefraction) {}
 
         virtual Vec3 GetBounce(const Vec3& incoming, const Vec3& normal, bool isFrontFace) const {
