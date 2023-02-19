@@ -21,9 +21,17 @@ class Camera {
 
         void SetFOV(double fov) { m_FOV = fov; }
 
+        void SetFocalLength(double focalLength) { m_FocalLength = focalLength; }
+
+        void SetFocusDist(double focusDist) { m_FocusDist = focusDist; }
+
+        void SetAperture(double aperture) { m_Aperture = aperture; }
+
         void SetView(const Vec3& location, const Vec3& lookAt) {
             m_Origin = location;
-            m_ViewDir = Vec3Util::normalize(location - lookAt);
+            const Vec3& lookDir = location - lookAt;
+            m_FocusDist = std::sqrt(Vec3Util::dot(lookDir, lookDir));
+            m_ViewDir = Vec3Util::normalize(lookDir);
             m_Right = Vec3Util::normalize(Vec3Util::cross(m_Up, m_ViewDir));
             m_LocalUp = Vec3Util::cross(m_ViewDir, m_Right);
         }
@@ -32,17 +40,21 @@ class Camera {
             double theta = Utils::degreesToRadians(m_FOV);
             double fovMul = std::tan(theta / 2);
             // u: -1 to aspectRatio (left to right), v: -1 to 1 (top to bottom)
-            double u = (2.0 * ((x + Random::Double()) / (m_ViewportWidth - 1.0)) - 1.0) * m_ViewportAspectRatio * fovMul;
-            double v = (2.0 * ((m_ViewportHeight - y + Random::Double()) / m_ViewportHeight) - 1.0) * fovMul;
+            double u = (2.0 * ((x + Random::Double()) / (m_ViewportWidth - 1.0)) - 1.0) * m_ViewportAspectRatio * fovMul * m_FocusDist;
+            double v = (2.0 * ((m_ViewportHeight - y + Random::Double()) / m_ViewportHeight) - 1.0) * fovMul * m_FocusDist;
 
             // Vec3 direction = Vec3(u, v, -m_FocalLength);
             // project direction from up = 0,1,0 and right = 1,0,0 to m_LocalUp and m_Right
             Vec3 projectedU = u * m_Right;
             Vec3 projectedV = v * m_LocalUp;
-            Vec3 projectedF = -m_FocalLength * m_ViewDir;
+            Vec3 projectedF = -m_FocalLength * m_FocusDist * m_ViewDir;
             Vec3 projection = projectedU + projectedV + projectedF;
 
-            return Ray(m_Origin, projection);
+            // Defocus Blur
+            Vec3 rd = (m_Aperture / 2.0) * Vec3Util::randomInDisk();
+            Vec3 offset = (m_LocalUp * rd.X) + (m_Right * rd.Y);
+
+            return Ray(m_Origin + offset, projection - offset);
         }
 
     private:
@@ -53,6 +65,8 @@ class Camera {
         Vec3 m_Right = Vec3(1.0, 0.0, 0.0);
         double m_FOV = 90.0;
         double m_FocalLength = 1.0;
+        double m_FocusDist = 0.0;
+        double m_Aperture = 0.0;
         uint32_t m_ViewportWidth = 0, m_ViewportHeight = 0;
         double m_ViewportAspectRatio = 0.0;
 };

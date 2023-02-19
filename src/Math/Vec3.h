@@ -201,6 +201,10 @@ namespace Vec3Util {
         return random(-1, 1);
     }
 
+    inline Vec3 randomInDisk() {
+        return normalize(Vec3(Random::Double(-1, 1), Random::Double(-1, 1), 0.0));
+    }
+
     inline Vec3 randomBounce(const Vec3& normal) {
         Vec3 rand = random();
         if (dot(rand, normal) <= 0.0) {

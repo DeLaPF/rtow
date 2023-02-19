@@ -44,6 +44,8 @@ int main(int argc, char* argv[]) {
 
     // Camera
     Camera camera = Camera();
+    camera.SetFOV(90);
+    camera.SetAperture(0.5);
     camera.Resize(imageWidth, imageHeight);
     camera.SetView(Vec3(-2, 2, 1), Vec3(0, 0, 0));
 
