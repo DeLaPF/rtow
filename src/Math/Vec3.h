@@ -4,6 +4,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <sstream>
 
 class Vec {
 public:
@@ -135,11 +136,11 @@ public:
 
 // TODO: generalize input and output for all below to all Vec classes
 inline std::ostream& operator<<(std::ostream& out, const Vec3& v) {
-    std::string data;
+    std::ostringstream oss;
     for (size_t i = 0; i < v.length(); i++) {
-        data.append("%d ", v[i]);
+        oss << v[i] << ", ";
     }
-    return out << data;
+    return out << oss.str();
 }
 
 inline Vec3 operator+(const Vec3& u, const Vec3& v) {
