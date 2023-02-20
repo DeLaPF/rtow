@@ -3,6 +3,7 @@
 #include "Math/Random.h"
 
 #include <atomic>
+#include <iostream>
 #include <thread>
 
 namespace ImageUtils {

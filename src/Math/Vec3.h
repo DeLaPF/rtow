@@ -2,8 +2,6 @@
 
 #include "Random.h"
 
-#include <cmath>
-#include <iostream>
 #include <sstream>
 
 template <int SIZE>

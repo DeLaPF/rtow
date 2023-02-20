@@ -1,8 +1,5 @@
 #pragma once
 
-#include "Ray.h"
-#include "Vec3.h"
-
 namespace Utils {
     const double PI = 3.1415926535897932385;
 

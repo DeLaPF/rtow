@@ -3,11 +3,8 @@
 #include "Image.h"
 #include "Camera/Camera.h"
 #include "Math/Ray.h"
-#include "Scene/Scene.h"
-#include "Scene/SceneComponent.h"
 #include "Math/Vec3.h"
-
-#include <cstdint>
+#include "Scene/Scene.h"
 
 class Renderer {
     public:
