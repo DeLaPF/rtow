@@ -15,11 +15,11 @@ class Material {
 
         virtual Vec3 GetBounce(const Vec3& incoming, const Vec3& normal, bool isFrontFace) const {
             if (Metallic == 1.0) {
-                return ((1 - Roughness) * Vec3Util::reflect(incoming, normal)) +
-                    (Roughness * Vec3Util::randomBounce(normal));
+                return ((1 - Roughness) * Vec3::reflect(incoming, normal)) +
+                    (Roughness * Vec3::randomBounce(normal));
             }
             double refractionRatio = isFrontFace ? (1.0 / IndexOfRefraction) : IndexOfRefraction;
-            return refract(Vec3Util::normalize(incoming), normal, refractionRatio);
+            return refract(Vec3::normalize(incoming), normal, refractionRatio);
         }
     
     public:
@@ -29,14 +29,14 @@ class Material {
         double IndexOfRefraction;
     private:
         static Vec3 refract(const Vec3& incoming, const Vec3& normal, double refractionRatio) {
-            double cosTheta = std::fmin(Vec3Util::dot(-incoming, normal), 1.0);
+            double cosTheta = std::fmin(Vec3::dot(-incoming, normal), 1.0);
             double sinTheta = std::sqrt(1.0 - (cosTheta * cosTheta));
             if (refractionRatio * sinTheta > 1.0 || reflectance(cosTheta, refractionRatio) > Random::Double()) {
-                return Vec3Util::reflect(incoming, normal);
+                return Vec3::reflect(incoming, normal);
             }
 
             Vec3 outPerp =  refractionRatio * (incoming + (cosTheta * normal));
-            Vec3 outPar = -std::sqrt(std::fabs(1.0 - Vec3Util::dot(outPerp, outPerp))) * normal;
+            Vec3 outPar = -std::sqrt(std::fabs(1.0 - Vec3::dot(outPerp, outPerp))) * normal;
             return outPerp + outPar;
         }
 

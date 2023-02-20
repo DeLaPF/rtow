@@ -91,12 +91,12 @@ Scene GenRandomScene() {
 
                 if (chooseMat < 0.8) {
                     // diffuse
-                    auto albedo = Vec3Util::random() * Vec3Util::random();
+                    auto albedo = Vec3::random() * Vec3::random();
                     sphereMat = std::make_shared<Material>(albedo);
                     scene.addComponent(std::make_shared<Sphere>(center, 0.2, matInd));
                 } else if (chooseMat < 0.95) {
                     // metal
-                    auto albedo = Vec3Util::random(0.5, 1);
+                    auto albedo = Vec3::random(0.5, 1);
                     auto fuzz = Random::Double(0, 0.5);
                     sphereMat = std::make_shared<Material>(albedo, fuzz);
                     scene.addComponent(std::make_shared<Sphere>(center, 0.2, matInd));

@@ -30,10 +30,10 @@ class Camera {
         void SetView(const Vec3& location, const Vec3& lookAt) {
             m_Origin = location;
             const Vec3& lookDir = location - lookAt;
-            m_FocusDist = std::sqrt(Vec3Util::dot(lookDir, lookDir));
-            m_ViewDir = Vec3Util::normalize(lookDir);
-            m_Right = Vec3Util::normalize(Vec3Util::cross(m_Up, m_ViewDir));
-            m_LocalUp = Vec3Util::cross(m_ViewDir, m_Right);
+            m_FocusDist = std::sqrt(Vec3::dot(lookDir, lookDir));
+            m_ViewDir = Vec3::normalize(lookDir);
+            m_Right = Vec3::normalize(Vec3::cross(m_Up, m_ViewDir));
+            m_LocalUp = Vec3::cross(m_ViewDir, m_Right);
         }
 
         Ray GetRay(uint32_t x, uint32_t y) const {
@@ -51,7 +51,7 @@ class Camera {
             Vec3 projection = projectedU + projectedV + projectedF;
 
             // Defocus Blur
-            Vec3 rd = (m_Aperture / 2.0) * Vec3Util::randomInDisk();
+            Vec2 rd = (m_Aperture / 2.0) * Vec2::random();
             Vec3 offset = (m_LocalUp * rd.X) + (m_Right * rd.Y);
 
             return Ray(m_Origin + offset, projection - offset);

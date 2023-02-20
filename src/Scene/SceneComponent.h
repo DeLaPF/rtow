@@ -12,7 +12,7 @@ struct HitResult {
     int HitIndex = -1;
 
     inline void SetFaceNormal(const Ray& ray, const Vec3& outwardNormal) {
-        IsFrontFace = Vec3Util::dot(ray.Direction, outwardNormal) < 0;
+        IsFrontFace = Vec3::dot(ray.Direction, outwardNormal) < 0;
         WorldNormal = IsFrontFace ? outwardNormal : -outwardNormal;
     }
 };
