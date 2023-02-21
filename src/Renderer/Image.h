@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Math/Utils.h"
-#include "Math/Vec3.h"
+#include "Math/Vec.h"
 
 struct Image {
     Vec3* Data = nullptr;

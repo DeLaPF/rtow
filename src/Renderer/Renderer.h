@@ -3,7 +3,7 @@
 #include "Image.h"
 #include "Camera/Camera.h"
 #include "Math/Ray.h"
-#include "Math/Vec3.h"
+#include "Math/Vec.h"
 #include "Scene/Scene.h"
 
 class Renderer {

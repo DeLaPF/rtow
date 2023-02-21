@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Math/Vec3.h"
+#include "Math/Vec.h"
 
 class Material {
     public:

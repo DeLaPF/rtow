@@ -1,7 +1,7 @@
 #pragma once
 
 #include "RenderableComponent.h"
-#include "Math/Vec3.h"
+#include "Math/Vec.h"
 
 class Sphere : public RenderableComponent {
     public:

@@ -2,7 +2,7 @@
 
 #include "Math/Ray.h"
 #include "Math/Utils.h"
-#include "Math/Vec3.h"
+#include "Math/Vec.h"
 
 class Camera {
     public:
