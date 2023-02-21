@@ -13,7 +13,8 @@ static_assert(SIZE > 1 && SIZE <= 4, "Error: Vec<SIZE>, SIZE must be 2, 3, or 4"
     Vec(double x, double y) : X(x), Y(y), Z(0), W(0) { vec = &X; }
     Vec(double x, double y, double z) : X(x), Y(y), Z(z), W(0) { vec = &X; }
     Vec(double x, double y, double z, double w) : X(x), Y(y), Z(z), W(w) { vec = &X; }
-    Vec(const Vec& v) : X(v.X), Y(v.Y), Z(v.Z), W(v.W) { vec = &X; }
+    template <int N>
+    Vec(const Vec<N>& v) : X(v.X), Y(v.Y), Z(v.Z), W(v.W) { vec = &X; }
 
     double length() const { return std::sqrt(lengthSquared()); }
     double lengthSquared() const { return dot(*this, *this); }
@@ -22,7 +23,8 @@ static_assert(SIZE > 1 && SIZE <= 4, "Error: Vec<SIZE>, SIZE must be 2, 3, or 4"
     double& operator[](int i) { return vec[i]; }
     void operator=(const Vec& v) { X = v.X, Y = v.Y, Z = v.Z, W = v.W; }
     Vec operator-() const { return Vec<SIZE>(-X, -Y, -Z, -W); }
-    Vec& operator+=(const Vec& v) {
+    template <int N>
+    Vec& operator+=(const Vec<N>& v) {
         X += v.X, Y += v.Y, Z += v.Z, W += v.W;
         return *this;
     }

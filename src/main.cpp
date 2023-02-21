@@ -7,15 +7,7 @@
 #include <fstream>
 #include <iostream>
 
-//void test() {
-//    Vec2();
-//    Vec3();
-//    Vec4();
-//}
-
 int main(int argc, char* argv[]) {
-    //test();
-    //exit(0);
     // Scene
     Scene scene = Scene::GenRandomScene();
 
