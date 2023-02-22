@@ -56,14 +56,14 @@ Vec3 Renderer::TraceRay(const Ray& ray, uint32_t bounces) {
         return Vec3();
     }
 
-    HitResult res = m_ActiveScene->RayCast(ray, 0.0001, std::numeric_limits<double>::infinity());
-    if (!res.DidHit) { // Miss
+    TraceResult res;
+    if (!m_ActiveScene->RayCast(ray, 0.0001, std::numeric_limits<double>::infinity(), res)) { // Miss
         Vec3 direction = Vec3::normalize(ray.Direction);
         double t = 0.5 * (direction.Y + 1.0);
         return ((1.0 - t) * Vec3(1.0, 1.0, 1.0)) + (t * Vec3(0.5, 0.7, 1.0)); //Lerp
     }
 
-    const auto& hitComponent = m_ActiveScene->GetRenderableComponent(res.HitIndex);
+    const auto& hitComponent = m_ActiveScene->GetTraceableComponentAt(res.HitIndex);
     const auto& hitMaterial = m_ActiveScene->GetMaterial(hitComponent->GetMaterialIndex());
     Ray bounced = Ray(res.WorldLocation, hitMaterial->GetBounce(ray.Direction, res.WorldNormal, res.IsFrontFace));
 

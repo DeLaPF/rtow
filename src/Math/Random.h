@@ -14,4 +14,8 @@ namespace Random
         // Returns a random real in [min,max).
         return min + ((max - min) * Double());
     }
+
+    inline int Int(int min, int max) {
+        return Double(min, max);
+    }
 }

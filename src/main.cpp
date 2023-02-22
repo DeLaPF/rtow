@@ -10,6 +10,7 @@
 int main(int argc, char* argv[]) {
     // Scene
     Scene scene = Scene::GenRandomScene();
+    scene.GenBoundingVolumeHierarchy();
 
     // Image
     uint32_t imageWidth = 1280, imageHeight = 720;

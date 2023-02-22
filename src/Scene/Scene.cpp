@@ -1,34 +1,27 @@
 #include "Scene.h"
-#include "Scene/Renderable.h"
-#include "Scene/RenderableComponent.h"
 
 void Scene::addComponent(std::shared_ptr<SceneComponent> component) {
-    if (auto renderableComponent = std::dynamic_pointer_cast<RenderableComponent>(component)) {
-        m_RenderableComponentList.addComponent(renderableComponent);
+    if (auto traceableComponent = std::dynamic_pointer_cast<TraceableComponent>(component)) {
+        m_TraceableComponents.push_back(traceableComponent);
     } else {
         m_SceneComponents.push_back(component);
     }
 }
 
-std::shared_ptr<SceneComponent> Scene::GetComponent(int index) const {
+std::shared_ptr<SceneComponent> Scene::GetComponentAt(int index) const {
     if (index < 0 || index >= m_SceneComponents.size()) {
         return std::make_shared<SceneComponent>(SceneComponent());
     }
 
-    auto component = m_SceneComponents.at(index);
-    if (auto renderableComponent = std::dynamic_pointer_cast<RenderableComponent>(component)) {
-        return renderableComponent;
-    } else {
-        return component;
-    }
+    return m_SceneComponents.at(index);
 }
 
-std::shared_ptr<RenderableComponent> Scene::GetRenderableComponent(int index) const {
-    if (index < 0 || index >= m_RenderableComponentList.size()) {
-        return std::make_shared<RenderableComponent>(RenderableComponent());
+std::shared_ptr<TraceableComponent> Scene::GetTraceableComponentAt(int index) const {
+    if (index < 0 || index >= m_TraceableComponents.size()) {
+        return std::make_shared<TraceableComponent>(TraceableComponent());
     }
 
-    return m_RenderableComponentList.GetComponent(index);
+    return m_TraceableComponents.at(index);
 }
 
 std::shared_ptr<Material> Scene::GetMaterial(int index) const {
@@ -39,10 +32,19 @@ std::shared_ptr<Material> Scene::GetMaterial(int index) const {
     return m_Materials.at(index);
 }
 
-HitResult Scene::RayCast(const Ray& ray, double distMin, double distMax) const {
-    return m_RenderableComponentList.GetHitResult(ray, distMin, distMax);
+bool Scene::RayCast(const Ray& ray, double distMin, double distMax, TraceResult& res) const {
+    double nearestHit = distMax;
+    for (size_t i = 0; i < m_TraceableComponents.size(); i++) {
+        if (m_TraceableComponents.at(i)->Trace(ray, distMin, nearestHit, res)) {
+            nearestHit = res.HitDistance;
+            res.HitIndex = (int)i;
+        }
+    }
+    return res.Success;
 }
-
+void Scene::GenBoundingVolumeHierarchy() {
+    m_TraceableComponents.push_back(std::make_shared<BVHNode>(m_TraceableComponents, 0, m_TraceableComponents.size()));
+}
 Scene Scene::GenRandomScene() {
     Scene scene;
     scene.addMaterial(std::make_shared<Material>(Vec3(0.5, 0.5, 0.5)));

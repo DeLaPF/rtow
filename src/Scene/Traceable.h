@@ -1,9 +1,10 @@
 #pragma once
 
+#include "BoundingVolume.h"
 #include "Math/Ray.h"
 
-struct HitResult {
-    bool DidHit = false;
+struct TraceResult {
+    bool Success = false;
     double HitDistance = 0.0;
     Vec3 WorldLocation = Vec3();
     Vec3 WorldNormal = Vec3();
@@ -17,7 +18,8 @@ struct HitResult {
     }
 };
 
-class Renderable {
-    public:
-        virtual HitResult GetHitResult(const Ray& r, double hitDistMin, double hitDistMax) const = 0;
+class Traceable {
+public:
+    virtual bool Trace(const Ray& ray, double traceDistMin, double traceDistMax, TraceResult& res) const = 0;
+    virtual BoundingBox GetBoundingBox() const = 0;
 };
