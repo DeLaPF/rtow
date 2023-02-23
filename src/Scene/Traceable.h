@@ -8,6 +8,7 @@ struct TraceResult {
     double HitDistance = 0.0;
     Vec3 WorldLocation = Vec3();
     Vec3 WorldNormal = Vec3();
+    Vec2 ComponentUV = Vec2();
     bool IsFrontFace = false;
 
     int HitIndex = -1;

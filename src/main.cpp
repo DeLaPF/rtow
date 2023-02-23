@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
     Scene scene = Scene();
     Camera camera = Camera();
     Renderer renderer = Renderer();
-    Scenes::MaterialTest(scene, camera);
+    Scenes::CheckeredSpheres(scene, camera);
 
     // Render
     Timer timer;

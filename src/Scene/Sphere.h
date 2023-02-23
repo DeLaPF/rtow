@@ -2,6 +2,7 @@
 
 #include "Scene/BoundingVolume.h"
 #include "TraceableComponent.h"
+#include "Math/Utils.h"
 #include "Math/Vec.h"
 
 class Sphere : public TraceableComponent {
@@ -27,11 +28,20 @@ public:
         res.HitDistance = nearT;
         res.WorldLocation = ray.At(nearT);
         res.SetFaceNormal(ray, (res.WorldLocation - m_WorldLocation) / Radius);
+        res.ComponentUV = GetUV(res.WorldNormal);
         return true;
     }
+
     BoundingBox GetBoundingBox() const override {
         return BoundingBox(m_WorldLocation - Vec3(Radius), m_WorldLocation + Vec3(Radius));
     }
 public:
     double Radius;
+public:
+    static Vec2 GetUV(const Vec3& point) {
+        auto theta = acos(-point.Y);
+        auto phi = atan2(-point.Z, point.X) + Utils::PI;
+
+        return Vec2(phi / (2 * Utils::PI), theta / Utils::PI);
+    }
 };

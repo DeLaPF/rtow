@@ -6,9 +6,6 @@
 #include <iostream>
 #include <thread>
 
-namespace ImageUtils {
-}
-
 void Renderer::Resize(uint32_t width, uint32_t height) {
     if (m_Image.Width == width && m_Image.Height == height) {
         return;
@@ -67,5 +64,5 @@ Vec3 Renderer::TraceRay(const Ray& ray, uint32_t bounces) {
     const auto& hitMaterial = m_ActiveScene->GetMaterial(hitComponent->GetMaterialIndex());
     Ray bounced = Ray(res.WorldLocation, hitMaterial->GetBounce(ray.Direction, res.WorldNormal, res.IsFrontFace));
 
-    return hitMaterial->Albedo * TraceRay(bounced, ++bounces);
+    return hitMaterial->Albedo(res.ComponentUV, res.WorldLocation) * TraceRay(bounced, ++bounces);
 }
