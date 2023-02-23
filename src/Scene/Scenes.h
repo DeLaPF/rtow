@@ -4,6 +4,22 @@
 #include "Scene.h"
 
 namespace Scenes {
+    static void MaterialTest(Scene& scene, Camera& camera) {
+        scene.addMaterial(std::make_shared<Material>(Vec3(0.5, 0.5, 0.5)));
+        scene.addMaterial(std::make_shared<Material>(Vec3(0.4, 0.2, 0.1), 1, 1, 0));
+        scene.addMaterial(std::make_shared<Material>(Vec3(0.7, 0.6, 0.5), 0, 1, 0));
+        scene.addMaterial(std::make_shared<Material>(Vec3(1, 1, 1), 0, 0, 1.5));
+        scene.addMaterial(std::make_shared<Material>(Vec3(0.6, 0.8, 1), 0.5, 0.2, 1.5));
+        scene.addComponent(std::make_shared<Sphere>(Vec3(0,-1000,0), 1000, 0));
+        scene.addComponent(std::make_shared<Sphere>(Vec3(-2.25, 1, 0), 1.0, 1));
+        scene.addComponent(std::make_shared<Sphere>(Vec3(0, 1, 0), 1.0, 2));
+        scene.addComponent(std::make_shared<Sphere>(Vec3(2.25, 1, 0), 1.0, 3));
+        scene.addComponent(std::make_shared<Sphere>(Vec3(0, 3.25, 0), 1.0, 4));
+
+        camera.SetView(Vec3(0, 2, 5.5), Vec3(0, 2, 0));
+        camera.SetFocalLength(2.0);
+    }
+
     static void RandomSpheres(Scene& scene, Camera& camera) {
         scene.addMaterial(std::make_shared<Material>(Vec3(0.5, 0.5, 0.5)));
         scene.addMaterial(std::make_shared<Material>(Vec3(1, 1, 1), 0, 0, 1.5));

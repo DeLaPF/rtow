@@ -14,12 +14,20 @@ class Material {
             : Albedo(albedo), Roughness(roughness), Metallic(metallic), IndexOfRefraction(indexOfRefraction) {}
 
         virtual Vec3 GetBounce(const Vec3& incoming, const Vec3& normal, bool isFrontFace) const {
-            if (Metallic == 1.0) {
-                return ((1 - Roughness) * Vec3::reflect(incoming, normal)) +
-                    (Roughness * Vec3::randomBounce(normal));
+            Vec3 nonDielectricComp = Vec3();
+            if (Metallic != 0.0) {
+                Vec3 diffuseComp =  Roughness != 0 ? Vec3::randomBounce(normal) : Vec3();
+                Vec3 metalComp = Roughness != 1 ? Vec3::reflect(incoming, normal) : Vec3();
+                nonDielectricComp = (Roughness * diffuseComp) + ((1 - Roughness) * metalComp);
             }
-            double refractionRatio = isFrontFace ? (1.0 / IndexOfRefraction) : IndexOfRefraction;
-            return refract(Vec3::normalize(incoming), normal, refractionRatio);
+
+            Vec3 dielectricComp = Vec3();
+            if (Metallic != 1.0) {
+                double refractionRatio = isFrontFace ? (1.0 / IndexOfRefraction) : IndexOfRefraction;
+                dielectricComp = refract(Vec3::normalize(incoming), normal, refractionRatio);
+            }
+
+            return (Metallic * nonDielectricComp) + ((1 - Metallic) * dielectricComp);
         }
     
     public:
