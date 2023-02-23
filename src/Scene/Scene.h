@@ -29,6 +29,4 @@ class Scene {
         std::vector<std::shared_ptr<SceneComponent>> m_SceneComponents;
         std::vector<std::shared_ptr<TraceableComponent>> m_TraceableComponents;
         std::vector<std::shared_ptr<Material>> m_Materials;
-    public:
-        static Scene GenRandomScene();
 };
