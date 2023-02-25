@@ -38,7 +38,6 @@ namespace Scenes {
         scene.addMaterial(std::make_shared<Material>(Vec3(0.4, 0.2, 0.1), 1, 1, 0));
         scene.addMaterial(std::make_shared<Material>(Vec3(0.7, 0.6, 0.5), 0, 1, 0));
 
-
         std::vector<std::shared_ptr<TraceableComponent>> traceableComponents;
         traceableComponents.push_back(std::make_shared<Sphere>(Vec3(0,-1000,0), 1000, 0));
         traceableComponents.push_back(std::make_shared<Sphere>(Vec3(0, 1, 0), 1.0, 1));

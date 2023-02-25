@@ -86,9 +86,9 @@ using Vec4 = Vec<4>;
 
 template <int SIZE>
 inline std::ostream& operator<<(std::ostream& out, const Vec<SIZE>& v) {
-    std::ostringstream oss;
-    for (size_t i = 0; i < v.size; i++) { oss << v[i] << ", "; }
-    return out << oss.str();
+    out << v[0];
+    for (size_t i = 0; i < v.size; i++) { out << ", " << v[i]; }
+    return out;
 }
 
 template <int SIZE1, int SIZE2>

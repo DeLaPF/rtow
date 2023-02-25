@@ -12,7 +12,7 @@ struct TraceResult {
     Vec2 ComponentUV = Vec2();
     bool IsFrontFace = false;
 
-    const TraceableComponent* HitComponent;
+    const TraceableComponent* HitComponent = nullptr;
 
     inline void SetFaceNormal(const Ray& ray, const Vec3& outwardNormal) {
         IsFrontFace = Vec3::dot(ray.Direction, outwardNormal) < 0;
