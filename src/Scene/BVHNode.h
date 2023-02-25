@@ -18,7 +18,7 @@ public:
                         : (axis == 1) ? BoxCompareY
                                       : BoxCompareZ;
 
-        if (numChildren >= 2) {
+        if (numChildren <= 2) {
             Left = Right = children[startInd];
             if (numChildren == 2) {
                 if (comparator(children[startInd], children[startInd + 1])) {

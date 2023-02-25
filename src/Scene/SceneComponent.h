@@ -8,10 +8,10 @@ public:
     SceneComponent(Vec3 location, int materialIndex)
         : m_WorldLocation(location), m_MaterialIndex(materialIndex) {}
 
-    virtual Vec3& GetWorldLocation() { return m_WorldLocation; }
+    virtual Vec3 GetWorldLocation() const { return m_WorldLocation; }
     virtual void SetWorldLocation(const Vec3& location) { m_WorldLocation = location; }
 
-    virtual int GetMaterialIndex() { return m_MaterialIndex; }
+    virtual int GetMaterialIndex() const { return m_MaterialIndex; }
     virtual void SetMaterialIndex(int index) { m_MaterialIndex = index; }
 protected:
     Vec3 m_WorldLocation;

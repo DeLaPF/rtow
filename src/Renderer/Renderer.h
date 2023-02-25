@@ -9,6 +9,7 @@
 class Renderer {
     public:
         Renderer() = default;
+        ~Renderer() { delete[] m_Image.Data; }
 
         void Resize(uint32_t width, uint32_t height);
 

@@ -15,14 +15,30 @@ public:
     BoundingBox(Vec3 minBound, Vec3 maxBound) : MinBound(minBound), MaxBound(maxBound) {}
 
     virtual bool DoesOverlap(const Ray& ray, double traceDistMin, double traceDistMax) const override {
-        for (int i = 0; i < 3; i++) {
-            double t0 = (MinBound[i] - ray.Origin[i]) / ray.Direction[i];
-            double t1 = (MaxBound[i] - ray.Origin[i]) / ray.Direction[i];
-            if (t0 > t1) { std::swap(t0, t1); }
-            traceDistMin = std::fmax(t0, traceDistMin);
-            traceDistMax = std::fmin(t1, traceDistMax);
-            if (traceDistMin >= traceDistMax) { return false; }
-        }
+        double t0X = std::fmin((MinBound.X - ray.Origin.X) / ray.Direction.X,
+                              (MaxBound.X - ray.Origin.X) / ray.Direction.X);
+        double t1X = std::fmax((MinBound.X - ray.Origin.X) / ray.Direction.X,
+                              (MaxBound.X - ray.Origin.X) / ray.Direction.X);
+        traceDistMin = std::fmax(t0X, traceDistMin);
+        traceDistMax = std::fmin(t1X, traceDistMax);
+        if (traceDistMin >= traceDistMax) { return false; }
+
+        double t0Y = std::fmin((MinBound.Y - ray.Origin.Y) / ray.Direction.Y,
+                              (MaxBound.Y - ray.Origin.Y) / ray.Direction.Y);
+        double t1Y = std::fmax((MinBound.Y - ray.Origin.Y) / ray.Direction.Y,
+                              (MaxBound.Y - ray.Origin.Y) / ray.Direction.Y);
+        traceDistMin = std::fmax(t0Y, traceDistMin);
+        traceDistMax = std::fmin(t1Y, traceDistMax);
+        if (traceDistMin >= traceDistMax) { return false; }
+
+        double t0Z = std::fmin((MinBound.Z - ray.Origin.Z) / ray.Direction.Z,
+                              (MaxBound.Z - ray.Origin.Z) / ray.Direction.Z);
+        double t1Z = std::fmax((MinBound.Z - ray.Origin.Z) / ray.Direction.Z,
+                              (MaxBound.Z - ray.Origin.Z) / ray.Direction.Z);
+        traceDistMin = std::fmax(t0Z, traceDistMin);
+        traceDistMax = std::fmin(t1Z, traceDistMax);
+        if (traceDistMin >= traceDistMax) { return false; }
+
         return true;
     }
 

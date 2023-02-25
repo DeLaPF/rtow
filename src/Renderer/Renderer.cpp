@@ -60,7 +60,7 @@ Vec3 Renderer::TraceRay(const Ray& ray, uint32_t bounces) {
         return ((1.0 - t) * Vec3(1.0, 1.0, 1.0)) + (t * Vec3(0.5, 0.7, 1.0)); //Lerp
     }
 
-    const auto& hitComponent = m_ActiveScene->GetTraceableComponentAt(res.HitIndex);
+    const auto hitComponent = res.HitComponent;
     const auto& hitMaterial = m_ActiveScene->GetMaterial(hitComponent->GetMaterialIndex());
     Ray bounced = Ray(res.WorldLocation, hitMaterial->GetBounce(ray.Direction, res.WorldNormal, res.IsFrontFace));
 

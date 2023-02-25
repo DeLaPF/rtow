@@ -3,6 +3,7 @@
 #include "BoundingVolume.h"
 #include "Math/Ray.h"
 
+class TraceableComponent;
 struct TraceResult {
     bool Success = false;
     double HitDistance = 0.0;
@@ -11,7 +12,7 @@ struct TraceResult {
     Vec2 ComponentUV = Vec2();
     bool IsFrontFace = false;
 
-    int HitIndex = -1;
+    const TraceableComponent* HitComponent;
 
     inline void SetFaceNormal(const Ray& ray, const Vec3& outwardNormal) {
         IsFrontFace = Vec3::dot(ray.Direction, outwardNormal) < 0;

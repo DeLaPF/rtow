@@ -37,7 +37,6 @@ bool Scene::RayCast(const Ray& ray, double distMin, double distMax, TraceResult&
     for (size_t i = 0; i < m_TraceableComponents.size(); i++) {
         if (m_TraceableComponents.at(i)->Trace(ray, distMin, nearestHit, res)) {
             nearestHit = res.HitDistance;
-            res.HitIndex = (int)i;
         }
     }
     return res.Success;
