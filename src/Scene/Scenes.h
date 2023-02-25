@@ -1,11 +1,7 @@
 #pragma once
 
 #include "Scene.h"
-#include "Scene/BVHNode.h"
-#include "Scene/TraceableComponent.h"
-#include "Texture.h"
 #include "Camera/Camera.h"
-#include <memory>
 
 namespace Scenes {
     static void MaterialTest(Scene& scene, Camera& camera) {
