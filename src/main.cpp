@@ -1,12 +1,12 @@
-#include "Camera/Camera.h"
-#include "Math/Timer.h"
-#include "Renderer/Renderer.h"
-#include "Renderer/Image.h"
-#include "Scene/Scene.h"
-#include "Scene/Scenes.h"
-
 #include <fstream>
 #include <iostream>
+
+#include "Camera/Camera.h"
+#include "Math/Timer.h"
+#include "Renderer/Image.h"
+#include "Renderer/Renderer.h"
+#include "Scene/Scene.h"
+#include "Scene/Scenes.h"
 
 int main(int argc, char* argv[]) {
     // Setup
