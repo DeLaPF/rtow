@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Random.h"
-
 #include <sstream>
+
+#include "Math/Random.h"
 
 template <int SIZE>
 class Vec {
@@ -51,7 +51,7 @@ public:
 
     static inline Vec<SIZE> normalize(Vec<SIZE> v) { return v / v.length(); }
 
-    static inline Vec<SIZE> random(double min, double max) {
+    static Vec<SIZE> random(double min, double max) {
         return Vec<SIZE>::normalize(Vec<SIZE>(Random::Double(min, max),
                                               Random::Double(min, max),
                                               Random::Double(min, max),
@@ -64,7 +64,7 @@ public:
         return v - (2 * (Vec<SIZE>::dot(v, reflectionAxis) * reflectionAxis));
     }
 
-    static inline Vec<SIZE> randomBounce(const Vec<SIZE>& normal) {
+    static Vec<SIZE> randomBounce(const Vec<SIZE>& normal) {
         Vec<SIZE> rand = Vec<SIZE>::random();
         if (Vec<SIZE>::dot(rand, normal) <= 0.0) {
             rand = -rand;
@@ -86,9 +86,9 @@ using Vec4 = Vec<4>;
 
 template <int SIZE>
 inline std::ostream& operator<<(std::ostream& out, const Vec<SIZE>& v) {
-    out << v[0];
-    for (size_t i = 0; i < v.size; i++) { out << ", " << v[i]; }
-    return out;
+    out << "(" << v[0];
+    for (size_t i = 1; i < v.size; i++) { out << ", " << v[i]; }
+    return out << ")";
 }
 
 template <int SIZE1, int SIZE2>
