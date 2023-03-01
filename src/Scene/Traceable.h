@@ -1,7 +1,7 @@
 #pragma once
 
-#include "BoundingVolume.h"
 #include "Math/Ray.h"
+#include "Scene/BoundingVolume.h"
 
 class TraceableComponent;
 struct TraceResult {
