@@ -20,7 +20,6 @@ bool Sphere::Trace(const Ray& ray, double distMin, double distMax, TraceResult& 
     res.WorldLocation = ray.At(nearT);
     res.SetFaceNormal(ray, (res.WorldLocation - m_WorldLocation) / Radius);
     res.ComponentUV = GetUV(res.WorldNormal);
-    res.HitComponent = dynamic_cast<const TraceableComponent*>(this);
     return true;
 }
 

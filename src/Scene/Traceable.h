@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Math/Ray.h"
+#include "Math/Vec.h"
 #include "Scene/BoundingVolume.h"
 
-class TraceableComponent;
 struct TraceResult {
     bool Success = false;
     double HitDistance = 0.0;
@@ -12,7 +12,7 @@ struct TraceResult {
     Vec2 ComponentUV = Vec2();
     bool IsFrontFace = false;
 
-    const TraceableComponent* HitComponent = nullptr;
+    int HitComponentIndex = -1;
 
     inline void SetFaceNormal(const Ray& ray, const Vec3& outwardNormal) {
         IsFrontFace = Vec3::dot(ray.Direction, outwardNormal) < 0;

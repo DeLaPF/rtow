@@ -16,6 +16,8 @@ public:
 public:
     std::shared_ptr<TraceableComponent> Left;
     std::shared_ptr<TraceableComponent> Right;
+    uint32_t StartInd;
+    uint32_t EndInd;
 private:
     BoundingBox m_BoundingBox;
 };

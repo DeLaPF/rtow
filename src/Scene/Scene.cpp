@@ -1,5 +1,7 @@
 #include "Scene.h"
 
+#include <algorithm>
+
 void Scene::addComponent(std::shared_ptr<SceneComponent> component) {
     if (auto traceableComponent = std::dynamic_pointer_cast<TraceableComponent>(component)) {
         m_TraceableComponents.push_back(traceableComponent);
@@ -33,9 +35,16 @@ std::shared_ptr<Material> Scene::GetMaterial(int index) const {
 }
 
 bool Scene::RayCast(const Ray& ray, double distMin, double distMax, TraceResult& res) const {
+    size_t startInd = 0;
+    if (m_BVH) {
+        m_BVH->Trace(ray, distMin, distMax, res);
+        startInd = m_BVH->EndInd;
+    }
+
     double nearestHit = distMax;
-    for (size_t i = 0; i < m_TraceableComponents.size(); i++) {
+    for (size_t i = startInd; i < m_TraceableComponents.size(); i++) {
         if (m_TraceableComponents.at(i)->Trace(ray, distMin, nearestHit, res)) {
+            res.HitComponentIndex = i;
             nearestHit = res.HitDistance;
         }
     }
@@ -43,5 +52,17 @@ bool Scene::RayCast(const Ray& ray, double distMin, double distMax, TraceResult&
 }
 
 void Scene::GenBoundingVolumeHierarchy() {
-    m_TraceableComponents.push_back(std::make_shared<BVHNode>(m_TraceableComponents, 0, m_TraceableComponents.size()));
+    SortComponentsForBVH(0, m_TraceableComponents.size());
+    m_BVH = std::make_unique<BVHNode>(m_TraceableComponents, 0, m_TraceableComponents.size());
+}
+
+void Scene::SortComponentsForBVH(size_t startInd, size_t endInd) {
+    if (endInd - startInd == 1) { return; }
+
+    int axis = Random::Int(0, 2);
+    auto comparator = TraceableComponentComparator(axis);
+    std::sort(m_TraceableComponents.begin() + startInd, m_TraceableComponents.begin() + endInd, comparator);
+    size_t mid = startInd + ((endInd - startInd) / 2);
+    SortComponentsForBVH(startInd, mid);
+    SortComponentsForBVH(mid, endInd);
 }

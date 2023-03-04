@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Math/Ray.h"
+#include "Math/Vec.h"
 
 class SceneComponent {
 public:

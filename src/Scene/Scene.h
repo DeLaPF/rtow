@@ -25,7 +25,11 @@ public:
 
     void GenBoundingVolumeHierarchy();
 private:
+    void SortComponentsForBVH(size_t startInd, size_t endInd);
+private:
     std::vector<std::shared_ptr<SceneComponent>> m_SceneComponents;
     std::vector<std::shared_ptr<TraceableComponent>> m_TraceableComponents;
     std::vector<std::shared_ptr<Material>> m_Materials;
+
+    std::unique_ptr<BVHNode> m_BVH;
 };
