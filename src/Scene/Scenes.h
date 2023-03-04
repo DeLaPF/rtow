@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Scene.h"
 #include "Camera/Camera.h"
+#include "Scene/Scene.h"
+#include "Scene/Sphere.h"
 
 namespace Scenes {
     static void MaterialTest(Scene& scene, Camera& camera) {

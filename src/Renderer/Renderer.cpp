@@ -1,15 +1,11 @@
 #include "Renderer.h"
 
-#include "Math/Random.h"
-
 #include <atomic>
 #include <iostream>
 #include <thread>
 
 void Renderer::Resize(uint32_t width, uint32_t height) {
-    if (m_Image.Width == width && m_Image.Height == height) {
-        return;
-    }
+    if (m_Image.Width == width && m_Image.Height == height) { return; }
 
     delete[] m_Image.Data;
     m_Image.Data = new Vec3[width * height];

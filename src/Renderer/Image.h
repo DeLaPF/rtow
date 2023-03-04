@@ -9,7 +9,7 @@ struct Image {
     uint32_t Height = 0;
     double AspectRatio = 0.0;
 
-    static inline void OutputImage(std::ostream &out, const Image& frame) {
+    static void OutputImage(std::ostream &out, const Image& frame) {
         out << "P3\n" << frame.Width << ' ' << frame.Height << "\n255\n";
         for (uint32_t y = 0; y < frame.Height; y++) {
             for (uint32_t x = 0; x < frame.Width; x++) {
