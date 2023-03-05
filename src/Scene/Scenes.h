@@ -3,6 +3,7 @@
 #include "Camera/Camera.h"
 #include "Scene/Scene.h"
 #include "Scene/Sphere.h"
+#include "Scene/Texture.h"
 
 namespace Scenes {
     static void MaterialTest(Scene& scene, Camera& camera) {
@@ -20,6 +21,21 @@ namespace Scenes {
 
         camera.SetView(Vec3(0, 2, 5.5), Vec3(0, 2, 0));
         camera.SetFocalLength(2.0);
+    }
+
+    static void PerlinSpheres(Scene& scene, Camera& camera) {
+        std::shared_ptr<Texture> perlinNoise = std::make_shared<PerlinNoiseTexture>(4);
+        std::shared_ptr<Texture> perlinTurbulence = std::make_shared<PerlinTurbulenceTexture>(4, 7);
+        std::shared_ptr<Texture> marble = std::make_shared<MarbleTexture>(4);
+        scene.addMaterial(std::make_shared<Material>(perlinNoise));
+        scene.addMaterial(std::make_shared<Material>(perlinTurbulence));
+        scene.addMaterial(std::make_shared<Material>(marble));
+        scene.addComponent(std::make_shared<Sphere>(Vec3(0, -1000, 0), 1000, 0));
+        scene.addComponent(std::make_shared<Sphere>(Vec3(-1.25, 1, 0), 1, 1));
+        scene.addComponent(std::make_shared<Sphere>(Vec3(1.25, 1, 0), 1, 2));
+
+        camera.SetView(Vec3(0, 2, 8), Vec3(0, 1, 0));
+        camera.SetFocalLength(5);
     }
 
     static void CheckeredSpheres(Scene& scene, Camera& camera) {
