@@ -41,14 +41,16 @@ bool Scene::RayCast(const Ray& ray, double distMin, double distMax, TraceResult&
         startInd = m_BVH->EndInd;
     }
 
+    bool success = false;
     double nearestHit = distMax;
     for (size_t i = startInd; i < m_TraceableComponents.size(); i++) {
         if (m_TraceableComponents.at(i)->Trace(ray, distMin, nearestHit, res)) {
             res.HitComponentIndex = i;
             nearestHit = res.HitDistance;
+            success = true;
         }
     }
-    return res.Success;
+    return success;
 }
 
 void Scene::GenBoundingVolumeHierarchy() {

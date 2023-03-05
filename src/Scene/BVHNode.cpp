@@ -19,7 +19,7 @@ BVHNode::BVHNode(std::vector<std::shared_ptr<TraceableComponent>>& components, s
     m_BoundingBox = BoundingBox::Surrounding(Left->GetBoundingBox(), Right->GetBoundingBox());
 }
 
-bool BVHNode::Trace(const Ray &ray, double traceDistMin, double traceDistMax, TraceResult& res) const {
+bool BVHNode::Trace(const Ray& ray, double traceDistMin, double traceDistMax, TraceResult& res) const {
     if (!m_BoundingBox.DoesOverlap(ray, traceDistMin, traceDistMax)) { return false; }
     if (EndInd - StartInd == 1) {
         if (Left->Trace(ray, traceDistMin, traceDistMax, res)) {

@@ -1,6 +1,6 @@
 #include "Scene/AxisAlignedRect.h"
 
-bool RectXY::Trace(const Ray &ray, double traceDistMin, double traceDistMax, TraceResult& res) const {
+bool RectXY::Trace(const Ray& ray, double traceDistMin, double traceDistMax, TraceResult& res) const {
     double t = (m_WorldLocation.Z - ray.Origin.Z) / ray.Direction.Z;
     if (t < traceDistMin || t > traceDistMax) { return false; }
 
@@ -17,7 +17,7 @@ bool RectXY::Trace(const Ray &ray, double traceDistMin, double traceDistMax, Tra
     return true;
 }
 
-bool RectXZ::Trace(const Ray &ray, double traceDistMin, double traceDistMax, TraceResult& res) const {
+bool RectXZ::Trace(const Ray& ray, double traceDistMin, double traceDistMax, TraceResult& res) const {
     double t = (m_WorldLocation.Y - ray.Origin.Y) / ray.Direction.Y;
     if (t < traceDistMin || t > traceDistMax) { return false; }
 
@@ -29,12 +29,12 @@ bool RectXZ::Trace(const Ray &ray, double traceDistMin, double traceDistMax, Tra
     res.HitDistance = t;
     res.WorldLocation = planeIntersection;
     res.SetFaceNormal(ray, Vec3(0, 1, 0));
-    res.ComponentUV = Vec2((planeIntersection.Z - MinBound.Z) / (MaxBound.Z - MinBound.Z),
-                           (planeIntersection.X - MinBound.X) / (MaxBound.X - MinBound.X));
+    res.ComponentUV = Vec2((planeIntersection.X - MinBound.X) / (MaxBound.X - MinBound.X),
+                           (planeIntersection.Z - MinBound.Z) / (MaxBound.Z - MinBound.Z));
     return true;
 }
 
-bool RectYZ::Trace(const Ray &ray, double traceDistMin, double traceDistMax, TraceResult& res) const {
+bool RectYZ::Trace(const Ray& ray, double traceDistMin, double traceDistMax, TraceResult& res) const {
     double t = (m_WorldLocation.X - ray.Origin.X) / ray.Direction.X;
     if (t < traceDistMin || t > traceDistMax) { return false; }
 
@@ -46,7 +46,7 @@ bool RectYZ::Trace(const Ray &ray, double traceDistMin, double traceDistMax, Tra
     res.HitDistance = t;
     res.WorldLocation = planeIntersection;
     res.SetFaceNormal(ray, Vec3(1, 0, 0));
-    res.ComponentUV = Vec2((planeIntersection.Y - MinBound.Y) / (MaxBound.Y - MinBound.Y),
-                           (planeIntersection.Z - MinBound.Z) / (MaxBound.Z - MinBound.Z));
+    res.ComponentUV = Vec2((planeIntersection.Z - MinBound.Z) / (MaxBound.Z - MinBound.Z),
+                           (planeIntersection.Y - MinBound.Y) / (MaxBound.Y - MinBound.Y));
     return true;
 }

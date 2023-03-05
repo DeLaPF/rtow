@@ -2,7 +2,7 @@
 
 #include "Math/Utils.h"
 
-bool Sphere::Trace(const Ray& ray, double distMin, double distMax, TraceResult& res) const {
+bool Sphere::Trace(const Ray& ray, double traceDistMin, double traceDistMax, TraceResult& res) const {
     Vec3 camOffset = ray.Origin - m_WorldLocation;
     double a = Vec3::dot(ray.Direction , ray.Direction);
     double b = 2.0 * Vec3::dot(camOffset, ray.Direction);
@@ -12,8 +12,8 @@ bool Sphere::Trace(const Ray& ray, double distMin, double distMax, TraceResult& 
 
     double rearT = (-b + std::sqrt(discriminant)) / (2.0 * a);
     double nearT = (-b - std::sqrt(discriminant)) / (2.0 * a);
-    if (nearT < distMin) { nearT = rearT; }
-    if (nearT < distMin || nearT > distMax) { return false; }
+    if (nearT < traceDistMin) { nearT = rearT; }
+    if (nearT < traceDistMin || nearT > traceDistMax) { return false; }
 
     res.Success = true;
     res.HitDistance = nearT;

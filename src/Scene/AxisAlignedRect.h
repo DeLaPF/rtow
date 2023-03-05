@@ -17,7 +17,7 @@ public:
           MinBound(Vec3(minX, minY, z - 0.0001)),
           MaxBound(Vec3(maxX, maxY, z + 0.0001)) {}
 
-    virtual bool Trace(const Ray &ray, double traceDistMin, double traceDistMax, TraceResult& res) const override;
+    virtual bool Trace(const Ray& ray, double traceDistMin, double traceDistMax, TraceResult& res) const override;
 
     virtual BoundingBox GetBoundingBox() const override {
         return BoundingBox(Vec3(MinBound.X, MinBound.Y, MinBound.Z),
@@ -40,7 +40,7 @@ public:
           MinBound(Vec3(minX, y - 0.0001, minZ)),
           MaxBound(Vec3(maxX, y + 0.0001, maxZ)) {}
 
-    virtual bool Trace(const Ray &ray, double traceDistMin, double traceDistMax, TraceResult& res) const override;
+    virtual bool Trace(const Ray& ray, double traceDistMin, double traceDistMax, TraceResult& res) const override;
 
     virtual BoundingBox GetBoundingBox() const override {
         return BoundingBox(Vec3(MinBound.X, MinBound.Y, MinBound.Z),
@@ -63,7 +63,7 @@ public:
           MinBound(Vec3(x - 0.0001, minY, minZ)),
           MaxBound(Vec3(x + 0.0001, maxY, maxZ)) {}
 
-    virtual bool Trace(const Ray &ray, double traceDistMin, double traceDistMax, TraceResult& res) const override;
+    virtual bool Trace(const Ray& ray, double traceDistMin, double traceDistMax, TraceResult& res) const override;
 
     virtual BoundingBox GetBoundingBox() const override {
         return BoundingBox(Vec3(MinBound.X, MinBound.Y, MinBound.Z),
