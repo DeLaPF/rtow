@@ -19,8 +19,8 @@ namespace Scenes {
     }
 
     static void Earth(Scene& scene, Camera& camera) {
-        std::shared_ptr<Texture> eartTexture = std::make_shared<ImageTexture>("external/textures/earthmap.jpg");
-        scene.addMaterial(std::make_shared<Material>(eartTexture));
+        std::shared_ptr<Texture> earthTexture = std::make_shared<ImageTexture>("external/textures/earthmap.jpg");
+        scene.addMaterial(std::make_shared<Material>(earthTexture));
         scene.addComponent(std::make_shared<Sphere>(Vec3(), 2, 0));
 
         camera.SetFOV(20);
