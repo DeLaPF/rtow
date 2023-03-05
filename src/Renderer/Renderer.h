@@ -8,9 +8,7 @@
 
 class Renderer {
 public:
-    Renderer(uint32_t samples = 100, uint32_t bounces = 50)
-        : m_BackgroundColor(Vec3()), m_Samples(samples), m_Bounces(bounces) {}
-
+    Renderer() : m_BackgroundColor(Vec3()), m_SamplesPerPixel(100), m_MaxBounces(50) {}
     ~Renderer() { delete[] m_Image.Data; }
 
     void Resize(uint32_t width, uint32_t height);
@@ -18,6 +16,10 @@ public:
     Image& Render(const Scene& scene, const Camera& camera);
 
     void SetBackgroundColor(Vec3 backgroundColor) { m_BackgroundColor = backgroundColor; }
+
+    void SetSamplesPerPixel(uint32_t samplesPerPixel) { m_SamplesPerPixel = samplesPerPixel; }
+
+    void SetMaxBounces(uint32_t maxBounces) { m_MaxBounces = maxBounces; }
 private:
     Vec3 RayGen(uint32_t x, uint32_t y);
 
@@ -26,8 +28,8 @@ private:
     Vec3 m_BackgroundColor;
 
     Image m_Image;
-    uint32_t m_Samples;
-    uint32_t m_Bounces;
+    uint32_t m_SamplesPerPixel;
+    uint32_t m_MaxBounces;
 
     const Scene* m_ActiveScene = nullptr;
     const Camera* m_ActiveCamera = nullptr;

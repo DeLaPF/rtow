@@ -22,6 +22,26 @@ namespace Scenes {
         renderer.SetBackgroundColor(Vec3(0.5, 0.7, 1.0));
     }
 
+    static void CornellBox(Scene& scene, Camera& camera, Renderer& renderer) {
+        scene.addMaterial(std::make_shared<Material>(Vec3(.65, .05, .05)));
+        scene.addMaterial(std::make_shared<Material>(Vec3(.73, .73, .73)));
+        scene.addMaterial(std::make_shared<Material>(Vec3(.12, .45, .15)));
+        scene.addMaterial(std::make_shared<Material>(Vec3(), Vec3(15)));
+
+        scene.addComponent(std::make_shared<RectYZ>(0, 555, 0, 555, 555, 2));
+        scene.addComponent(std::make_shared<RectYZ>(0, 555, 0, 555, 0, 0));
+        scene.addComponent(std::make_shared<RectXZ>(213, 343, 227, 332, 554, 3));
+        scene.addComponent(std::make_shared<RectXZ>(0, 555, 0, 555, 0, 1));
+        scene.addComponent(std::make_shared<RectXZ>(0, 555, 0, 555, 555, 1));
+        scene.addComponent(std::make_shared<RectXY>(0, 555, 0, 555, 555, 1));
+
+        camera.SetFOV(40);
+        camera.SetView(Vec3(278, 278, -800), Vec3(278, 278, 0));
+
+        renderer.SetBackgroundColor(Vec3());
+        renderer.SetSamplesPerPixel(200);
+    }
+
     static void Earth(Scene& scene, Camera& camera, Renderer& renderer) {
         std::shared_ptr<Texture> earthTexture = std::make_shared<ImageTexture>("external/textures/earthmap.jpg");
         scene.addMaterial(std::make_shared<Material>(earthTexture));

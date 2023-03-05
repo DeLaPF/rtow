@@ -37,15 +37,15 @@ Image& Renderer::Render(const Scene &scene, const Camera &camera) {
 
 Vec3 Renderer::RayGen(uint32_t x, uint32_t y) {
     Vec3 color = Vec3();
-    for (uint32_t i = 0; i < m_Samples; i++) {
-        color += TraceRay(m_ActiveCamera->GetRay(x, y), 0) / m_Samples;
+    for (uint32_t i = 0; i < m_SamplesPerPixel; i++) {
+        color += TraceRay(m_ActiveCamera->GetRay(x, y), 0) / m_SamplesPerPixel;
     }
 
     return color;
 }
 
 Vec3 Renderer::TraceRay(const Ray& ray, uint32_t bounces) {
-    if (bounces >= m_Bounces) { return Vec3(); }
+    if (bounces >= m_MaxBounces) { return Vec3(); }
 
     TraceResult res;
     if (!m_ActiveScene->RayCast(ray, 0.0001, std::numeric_limits<double>::infinity(), res)) { // Miss
