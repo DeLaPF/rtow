@@ -3,6 +3,7 @@
 #include "Camera/Camera.h"
 #include "Material/Texture.h"
 #include "Renderer/Renderer.h"
+#include "Scene/AxisAlignedRect.h"
 #include "Scene/Scene.h"
 #include "Scene/Sphere.h"
 
@@ -31,6 +32,20 @@ namespace Scenes {
         camera.SetView(Vec3(13, 2, 3), Vec3(0, 0, 0));
 
         renderer.SetBackgroundColor(Vec3(0.5, 0.7, 1.0));
+    }
+
+    static void EmissiveRectangleTest(Scene& scene, Camera& camera, Renderer& renderer) {
+        std::shared_ptr<Texture> marble = std::make_shared<MarbleTexture>(2);
+        scene.addMaterial(std::make_shared<Material>(marble));
+        scene.addMaterial(std::make_shared<Material>(Vec3(0.5), Vec3(5, 2, 2)));
+        scene.addComponent(std::make_shared<Sphere>(Vec3(0,-1000,0), 1000, 0));
+        scene.addComponent(std::make_shared<Sphere>(Vec3(0, 2, 0), 2, 0));
+        scene.addComponent(std::make_shared<RectXY>(3, 5, 1, 3, -2, 1));
+
+        camera.SetFOV(20);
+        camera.SetView(Vec3(26, 3, 6), Vec3(0, 2, 0));
+
+        renderer.SetBackgroundColor(Vec3());
     }
 
     static void EmissiveSphereTest(Scene& scene, Camera& camera, Renderer& renderer) {
