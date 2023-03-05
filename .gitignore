@@ -5,4 +5,5 @@ winBuild/
 # Auto generated
 .cache/
 compile_commands.json
-image.ppm
+*.ppm
+*.out

@@ -19,7 +19,7 @@ namespace Scenes {
     }
 
     static void Earth(Scene& scene, Camera& camera) {
-        std::shared_ptr<Texture> eartTexture = std::make_shared<ImageTexture>("earthmap.jpg");
+        std::shared_ptr<Texture> eartTexture = std::make_shared<ImageTexture>("external/textures/earthmap.jpg");
         scene.addMaterial(std::make_shared<Material>(eartTexture));
         scene.addComponent(std::make_shared<Sphere>(Vec3(), 2, 0));
 
