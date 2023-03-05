@@ -7,34 +7,27 @@
 
 class Material {
 public:
-    Material()
-        : m_Albedo(std::make_shared<Texture>(Vec3())), Roughness(1), Metallic(1.0), IndexOfRefraction(1.0) {}
-
-    Material(Vec3 albedo)
-        : m_Albedo(std::make_shared<Texture>(albedo)), Roughness(1), Metallic(1.0), IndexOfRefraction(1.0) {}
-    Material(Vec3 albedo, double roughness)
-        : m_Albedo(std::make_shared<Texture>(albedo)), Roughness(roughness), Metallic(1.0), IndexOfRefraction(1.0) {}
-    Material(Vec3 albedo, double roughness, double metallic, double indexOfRefraction)
-        : m_Albedo(std::make_shared<Texture>(albedo)), Roughness(roughness), Metallic(metallic), IndexOfRefraction(indexOfRefraction) {}
-
-    Material(std::shared_ptr<Texture> texture)
-        : m_Albedo(texture), Roughness(1), Metallic(1.0), IndexOfRefraction(1.0) {}
-    Material(std::shared_ptr<Texture> texture, double roughness)
-        : m_Albedo(texture), Roughness(roughness), Metallic(1.0), IndexOfRefraction(1.0) {}
-    Material(std::shared_ptr<Texture> texture, double roughness, double metallic, double indexOfRefraction)
-        : m_Albedo(texture), Roughness(roughness), Metallic(metallic), IndexOfRefraction(indexOfRefraction) {}
+    Material();
+    Material(Vec3 albedo, double roughness = 1.0, double metallic = 1.0, double indexOfRefraction = 1.0, bool canBounce = true);
+    Material(Vec3 albedo, Vec3 emission, double roughness = 1.0, double metallic = 1.0, double indexOfRefraction = 1.0, bool canBounce = true);
+    Material(std::shared_ptr<Texture> albedo, double roughness = 1.0, double metallic = 1.0, double indexOfRefraction = 1.0, bool canBounce = true);
+    Material(std::shared_ptr<Texture> albedo, std::shared_ptr<Texture> emission, double roughness = 1.0, double metallic = 1.0, double indexOfRefraction = 1.0, bool canBounce = true);
 
     virtual Vec3 GetBounce(const Vec3& incoming, const Vec3& normal, bool isFrontFace) const;
 
     virtual Vec3 Albedo(const Vec2& UV, const Vec3& point) { return m_Albedo->Value(UV, point); }
-
     virtual Vec3 Albedo() { return Albedo(Vec2(), Vec3()); }
+
+    virtual Vec3 Emission(const Vec2& UV, const Vec3& point) { return m_Emission->Value(UV, point); }
+    virtual Vec3 Emission() { return Emission(Vec2(), Vec3()); }
 public:
     double Roughness;
     double Metallic;
     double IndexOfRefraction;
+    bool CanBounce;
 private:
     std::shared_ptr<Texture> m_Albedo;
+    std::shared_ptr<Texture> m_Emission;
 private:
     static Vec3 refract(const Vec3& incoming, const Vec3& normal, double refractionRatio);
 

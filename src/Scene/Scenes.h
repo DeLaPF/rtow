@@ -2,11 +2,12 @@
 
 #include "Camera/Camera.h"
 #include "Material/Texture.h"
+#include "Renderer/Renderer.h"
 #include "Scene/Scene.h"
 #include "Scene/Sphere.h"
 
 namespace Scenes {
-    static void CheckeredSpheres(Scene& scene, Camera& camera) {
+    static void CheckeredSpheres(Scene& scene, Camera& camera, Renderer& renderer) {
         std::shared_ptr<Texture> checkered = std::make_shared<CheckeredTexture>(Vec3(0.2, 0.3, 0.1), Vec3(0.9, 0.9, 0.9));
         scene.addMaterial(std::make_shared<Material>(checkered));
         scene.addComponent(std::make_shared<Sphere>(Vec3(0,-10, 0), 10, 0));
@@ -16,9 +17,11 @@ namespace Scenes {
         camera.SetAperture(0.1);
         camera.SetView(Vec3(13, 2, 3), Vec3(0, 0, 0));
         camera.SetFocusDist(10);
+
+        renderer.SetBackgroundColor(Vec3(0.5, 0.7, 1.0));
     }
 
-    static void Earth(Scene& scene, Camera& camera) {
+    static void Earth(Scene& scene, Camera& camera, Renderer& renderer) {
         std::shared_ptr<Texture> earthTexture = std::make_shared<ImageTexture>("external/textures/earthmap.jpg");
         scene.addMaterial(std::make_shared<Material>(earthTexture));
         scene.addComponent(std::make_shared<Sphere>(Vec3(), 2, 0));
@@ -26,9 +29,26 @@ namespace Scenes {
         camera.SetFOV(20);
         camera.SetAperture(0.1);
         camera.SetView(Vec3(13, 2, 3), Vec3(0, 0, 0));
+
+        renderer.SetBackgroundColor(Vec3(0.5, 0.7, 1.0));
     }
 
-    static void MaterialTest(Scene& scene, Camera& camera) {
+    static void EmissiveSphereTest(Scene& scene, Camera& camera, Renderer& renderer) {
+        std::shared_ptr<Texture> marble = std::make_shared<MarbleTexture>(2);
+        scene.addMaterial(std::make_shared<Material>(marble));
+        scene.addMaterial(std::make_shared<Material>(Vec3(0.5), Vec3(5, 2, 2)));
+        scene.addComponent(std::make_shared<Sphere>(Vec3(0,-1000,0), 1000, 0));
+        scene.addComponent(std::make_shared<Sphere>(Vec3(0, 1, 0), 1, 0));
+        scene.addComponent(std::make_shared<Sphere>(Vec3(2, 4, -2), 2, 1));
+
+        camera.SetFOV(30);
+        camera.SetAperture(0.1);
+        camera.SetView(Vec3(13, 2, 3), Vec3(0, 0, 0));
+
+        renderer.SetBackgroundColor(Vec3());
+    }
+
+    static void MaterialTest(Scene& scene, Camera& camera, Renderer& renderer) {
         scene.addMaterial(std::make_shared<Material>(Vec3(0.5, 0.5, 0.5)));
         scene.addMaterial(std::make_shared<Material>(Vec3(0.4, 0.2, 0.1), 1, 1, 0));
         scene.addMaterial(std::make_shared<Material>(Vec3(0.7, 0.6, 0.5), 0, 1, 0));
@@ -43,9 +63,11 @@ namespace Scenes {
 
         camera.SetView(Vec3(0, 2, 5.5), Vec3(0, 2, 0));
         camera.SetFocalLength(2.0);
+
+        renderer.SetBackgroundColor(Vec3(0.5, 0.7, 1.0));
     }
 
-    static void PerlinSpheres(Scene& scene, Camera& camera) {
+    static void PerlinSpheres(Scene& scene, Camera& camera, Renderer& renderer) {
         std::shared_ptr<Texture> perlinNoise = std::make_shared<PerlinNoiseTexture>(4);
         std::shared_ptr<Texture> perlinTurbulence = std::make_shared<PerlinTurbulenceTexture>(4, 7);
         std::shared_ptr<Texture> marble = std::make_shared<MarbleTexture>(4);
@@ -58,9 +80,11 @@ namespace Scenes {
 
         camera.SetView(Vec3(0, 2, 8), Vec3(0, 1, 0));
         camera.SetFocalLength(5);
+
+        renderer.SetBackgroundColor(Vec3(0.5, 0.7, 1.0));
     }
 
-    static void RandomSpheres(Scene& scene, Camera& camera) {
+    static void RandomSpheres(Scene& scene, Camera& camera, Renderer& renderer) {
         scene.addMaterial(std::make_shared<Material>(Vec3(0.5, 0.5, 0.5)));
         scene.addMaterial(std::make_shared<Material>(Vec3(1, 1, 1), 0, 0, 1.5));
         scene.addMaterial(std::make_shared<Material>(Vec3(0.4, 0.2, 0.1), 1, 1, 0));
@@ -106,5 +130,7 @@ namespace Scenes {
         camera.SetAperture(0.1);
         camera.SetView(Vec3(13, 2, 3), Vec3(0, 0, 0));
         camera.SetFocusDist(10);
+
+        renderer.SetBackgroundColor(Vec3(0.5, 0.7, 1.0));
     }
 }

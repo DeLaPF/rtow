@@ -45,20 +45,18 @@ Vec3 Renderer::RayGen(uint32_t x, uint32_t y) {
 }
 
 Vec3 Renderer::TraceRay(const Ray& ray, uint32_t bounces) {
-    if (bounces >= m_Bounces) {
-        return Vec3();
-    }
+    if (bounces >= m_Bounces) { return Vec3(); }
 
     TraceResult res;
     if (!m_ActiveScene->RayCast(ray, 0.0001, std::numeric_limits<double>::infinity(), res)) { // Miss
-        Vec3 direction = Vec3::normalize(ray.Direction);
-        double t = 0.5 * (direction.Y + 1.0);
-        return ((1.0 - t) * Vec3(1.0, 1.0, 1.0)) + (t * Vec3(0.5, 0.7, 1.0)); //Lerp
+        return m_BackgroundColor;
     }
 
     const auto hitComponent = m_ActiveScene->GetTraceableComponentAt(res.HitComponentIndex);
     const auto& hitMaterial = m_ActiveScene->GetMaterial(hitComponent->GetMaterialIndex());
-    Ray bounced = Ray(res.WorldLocation, hitMaterial->GetBounce(ray.Direction, res.WorldNormal, res.IsFrontFace));
+    Vec3 emitted = hitMaterial->Emission(res.ComponentUV, res.WorldLocation);
+    if (!hitMaterial->CanBounce) { return emitted; }
 
-    return hitMaterial->Albedo(res.ComponentUV, res.WorldLocation) * TraceRay(bounced, ++bounces);
+    Ray bounced = Ray(res.WorldLocation, hitMaterial->GetBounce(ray.Direction, res.WorldNormal, res.IsFrontFace));
+    return emitted + (hitMaterial->Albedo(res.ComponentUV, res.WorldLocation) * TraceRay(bounced, ++bounces));
 }

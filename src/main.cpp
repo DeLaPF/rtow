@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
     Scene scene = Scene();
     Camera camera = Camera();
     Renderer renderer = Renderer();
-    Scenes::Earth(scene, camera);
+    Scenes::EmissiveSphereTest(scene, camera, renderer);
 
     // Render
     Timer timer;

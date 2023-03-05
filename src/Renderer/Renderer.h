@@ -7,25 +7,28 @@
 #include "Scene/Scene.h"
 
 class Renderer {
-    public:
-        Renderer() : m_Samples(100), m_Bounces(50) {}
-        Renderer(uint32_t samples, uint32_t bounces)
-            : m_Samples(samples), m_Bounces(bounces) {}
+public:
+    Renderer(uint32_t samples = 100, uint32_t bounces = 50)
+        : m_BackgroundColor(Vec3()), m_Samples(samples), m_Bounces(bounces) {}
 
-        ~Renderer() { delete[] m_Image.Data; }
+    ~Renderer() { delete[] m_Image.Data; }
 
-        void Resize(uint32_t width, uint32_t height);
+    void Resize(uint32_t width, uint32_t height);
 
-        Image& Render(const Scene& scene, const Camera& camera);
-    private:
-        Vec3 RayGen(uint32_t x, uint32_t y);
+    Image& Render(const Scene& scene, const Camera& camera);
 
-        Vec3 TraceRay(const Ray& ray, uint32_t bounces);
-    private:
-        Image m_Image;
-        uint32_t m_Samples;
-        uint32_t m_Bounces;
+    void SetBackgroundColor(Vec3 backgroundColor) { m_BackgroundColor = backgroundColor; }
+private:
+    Vec3 RayGen(uint32_t x, uint32_t y);
 
-        const Scene* m_ActiveScene = nullptr;
-        const Camera* m_ActiveCamera = nullptr;
+    Vec3 TraceRay(const Ray& ray, uint32_t bounces);
+private:
+    Vec3 m_BackgroundColor;
+
+    Image m_Image;
+    uint32_t m_Samples;
+    uint32_t m_Bounces;
+
+    const Scene* m_ActiveScene = nullptr;
+    const Camera* m_ActiveCamera = nullptr;
 };

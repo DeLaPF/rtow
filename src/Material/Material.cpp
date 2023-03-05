@@ -1,5 +1,55 @@
 #include "Material/Material.h"
 
+Material::Material()
+    : m_Albedo(std::make_shared<Texture>(Vec3())),
+      m_Emission(std::make_shared<Texture>(Vec3())),
+      Roughness(1),
+      Metallic(1.0),
+      IndexOfRefraction(1.0),
+      CanBounce(true) {}
+
+Material::Material(Vec3 albedo,
+                   double roughness, double metallic,
+                   double indexOfRefraction, bool canBounce)
+    : m_Albedo(std::make_shared<Texture>(albedo)),
+      m_Emission(std::make_shared<Texture>(Vec3())),
+      Roughness(roughness),
+      Metallic(metallic),
+      IndexOfRefraction(indexOfRefraction),
+      CanBounce(canBounce) {}
+
+Material::Material(Vec3 albedo,
+                   Vec3 emmision,
+                   double roughness, double metallic,
+                   double indexOfRefraction, bool canBounce)
+    : m_Albedo(std::make_shared<Texture>(albedo)),
+      m_Emission(std::make_shared<Texture>(emmision)),
+      Roughness(roughness),
+      Metallic(metallic),
+      IndexOfRefraction(indexOfRefraction),
+      CanBounce(canBounce) {}
+
+Material::Material(std::shared_ptr<Texture> albedo,
+                  double roughness, double metallic,
+                  double indexOfRefraction, bool canBounce)
+    : m_Albedo(albedo),
+      m_Emission(std::make_shared<Texture>(Vec3())),
+      Roughness(roughness),
+      Metallic(metallic),
+      IndexOfRefraction(indexOfRefraction),
+      CanBounce(canBounce) {}
+
+Material::Material(std::shared_ptr<Texture> albedo,
+                   std::shared_ptr<Texture> emission,
+                   double roughness, double metallic,
+                   double indexOfRefraction, bool canBounce)
+    : m_Albedo(albedo),
+      m_Emission(emission),
+      Roughness(roughness),
+      Metallic(metallic),
+      IndexOfRefraction(indexOfRefraction),
+      CanBounce(canBounce) {}
+
 Vec3 Material::GetBounce(const Vec3& incoming, const Vec3& normal, bool isFrontFace) const {
     Vec3 nonDielectricComp = Vec3();
     if (Metallic != 0.0) {
