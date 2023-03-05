@@ -3,8 +3,8 @@
 #include <memory>
 #include <vector>
 
+#include "Material/Material.h"
 #include "Scene/BVHNode.h"
-#include "Scene/Material.h"
 #include "Scene/SceneComponent.h"
 #include "Scene/TraceableComponent.h"
 

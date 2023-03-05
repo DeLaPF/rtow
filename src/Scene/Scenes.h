@@ -1,11 +1,33 @@
 #pragma once
 
 #include "Camera/Camera.h"
+#include "Material/Texture.h"
 #include "Scene/Scene.h"
 #include "Scene/Sphere.h"
-#include "Scene/Texture.h"
 
 namespace Scenes {
+    static void CheckeredSpheres(Scene& scene, Camera& camera) {
+        std::shared_ptr<Texture> checkered = std::make_shared<CheckeredTexture>(Vec3(0.2, 0.3, 0.1), Vec3(0.9, 0.9, 0.9));
+        scene.addMaterial(std::make_shared<Material>(checkered));
+        scene.addComponent(std::make_shared<Sphere>(Vec3(0,-10, 0), 10, 0));
+        scene.addComponent(std::make_shared<Sphere>(Vec3(0, 10, 0), 10, 0));
+
+        camera.SetFOV(20);
+        camera.SetAperture(0.1);
+        camera.SetView(Vec3(13, 2, 3), Vec3(0, 0, 0));
+        camera.SetFocusDist(10);
+    }
+
+    static void Earth(Scene& scene, Camera& camera) {
+        std::shared_ptr<Texture> eartTexture = std::make_shared<ImageTexture>("earthmap.jpg");
+        scene.addMaterial(std::make_shared<Material>(eartTexture));
+        scene.addComponent(std::make_shared<Sphere>(Vec3(), 2, 0));
+
+        camera.SetFOV(20);
+        camera.SetAperture(0.1);
+        camera.SetView(Vec3(13, 2, 3), Vec3(0, 0, 0));
+    }
+
     static void MaterialTest(Scene& scene, Camera& camera) {
         scene.addMaterial(std::make_shared<Material>(Vec3(0.5, 0.5, 0.5)));
         scene.addMaterial(std::make_shared<Material>(Vec3(0.4, 0.2, 0.1), 1, 1, 0));
@@ -36,18 +58,6 @@ namespace Scenes {
 
         camera.SetView(Vec3(0, 2, 8), Vec3(0, 1, 0));
         camera.SetFocalLength(5);
-    }
-
-    static void CheckeredSpheres(Scene& scene, Camera& camera) {
-        std::shared_ptr<Texture> checkered = std::make_shared<CheckeredTexture>(Vec3(0.2, 0.3, 0.1), Vec3(0.9, 0.9, 0.9));
-        scene.addMaterial(std::make_shared<Material>(checkered));
-        scene.addComponent(std::make_shared<Sphere>(Vec3(0,-10, 0), 10, 0));
-        scene.addComponent(std::make_shared<Sphere>(Vec3(0, 10, 0), 10, 0));
-
-        camera.SetFOV(20);
-        camera.SetAperture(0.1);
-        camera.SetView(Vec3(13, 2, 3), Vec3(0, 0, 0));
-        camera.SetFocusDist(10);
     }
 
     static void RandomSpheres(Scene& scene, Camera& camera) {

@@ -3,7 +3,7 @@
 #include <memory>
 
 #include "Math/Vec.h"
-#include "Scene/Texture.h"
+#include "Material/Texture.h"
 
 class Material {
 public:

@@ -2,7 +2,9 @@
 
 #include <memory>
 
+#include "Material/STBImage.h"
 #include "Math/Perlin.h"
+#include "Math/Utils.h"
 #include "Math/Vec.h"
 
 class Texture {
@@ -79,4 +81,29 @@ public:
 public:
     Perlin m_Perlin;
     double m_Scale;
+};
+
+class ImageTexture : public Texture {
+public:
+    ImageTexture() : m_Image(STBImage()) {}
+    ImageTexture(const char* filename) : m_Image(STBImage(filename)) {}
+
+    virtual Vec3 Value(const Vec2& UV, const Vec3& point) const override {
+        if (!m_Image.Data) { return Vec3(0, 1, 1); }
+
+        // Clamp input texture coordinates to [0,1] x [1,0]
+        double u = Utils::clamp(UV.X, 0.0, 1.0);
+        double v = 1.0 - Utils::clamp(UV.Y, 0.0, 1.0);  // Flip V to image coordinates
+
+        int i = static_cast<int>(u * m_Image.Width);
+        int j = static_cast<int>(v * m_Image.Height);
+
+        // Clamp integer mapping, since actual coordinates should be less than 1.0
+        if (i >= m_Image.Width) { i = m_Image.Width - 1; }
+        if (j >= m_Image.Height) { j = m_Image.Height - 1; }
+
+        return m_Image.GetPixelAt(i, j);
+    }
+private:
+    STBImage m_Image;
 };

@@ -1,4 +1,4 @@
-#include "Scene/Material.h"
+#include "Material/Material.h"
 
 Vec3 Material::GetBounce(const Vec3& incoming, const Vec3& normal, bool isFrontFace) const {
     Vec3 nonDielectricComp = Vec3();
