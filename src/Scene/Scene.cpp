@@ -35,13 +35,13 @@ std::shared_ptr<Material> Scene::GetMaterial(int index) const {
 }
 
 bool Scene::RayCast(const Ray& ray, double distMin, double distMax, TraceResult& res) const {
+    bool success = false;
     size_t startInd = 0;
     if (m_BVH) {
-        m_BVH->Trace(ray, distMin, distMax, res);
+        success = m_BVH->Trace(ray, distMin, distMax, res);
         startInd = m_BVH->EndInd;
     }
 
-    bool success = false;
     double nearestHit = distMax;
     for (size_t i = startInd; i < m_TraceableComponents.size(); i++) {
         if (m_TraceableComponents.at(i)->Trace(ray, distMin, nearestHit, res)) {

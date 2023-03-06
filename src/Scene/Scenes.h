@@ -37,6 +37,7 @@ namespace Scenes {
         scene.addComponent(std::make_shared<RectXY>(0, 555, 0, 555, 555, 1));
         scene.addComponent(std::make_shared<Box>(Vec3(130, 0, 65), Vec3(295, 165, 230), 1));
         scene.addComponent(std::make_shared<Box>(Vec3(265, 0, 295), Vec3(430, 330, 460), 1));
+        scene.GenBoundingVolumeHierarchy();
 
         camera.SetFOV(40);
         camera.SetView(Vec3(278, 278, -800), Vec3(278, 278, 0));
