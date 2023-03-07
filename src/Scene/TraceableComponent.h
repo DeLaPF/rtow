@@ -10,10 +10,31 @@
 class TraceableComponent : public SceneComponent, Traceable {
 public:
     TraceableComponent() : SceneComponent() {}
-    TraceableComponent(Vec3 location, int materialIndex) : SceneComponent(location, materialIndex) {}
+    TraceableComponent(Vec3 location, int materialIndex)
+        : SceneComponent(location, materialIndex) {}
 
-    virtual bool Trace(const Ray& ray, double traceDistMin, double traceDistMax, TraceResult& res) const override { return false; }
-    virtual BoundingBox GetBoundingBox() const override { return BoundingBox(); }
+    virtual bool Trace(const Ray& ray, double traceDistMin, double traceDistMax, TraceResult& res) const override {
+        Ray translated = Ray(ray.Origin - m_WorldLocation, ray.Direction);
+        if (!TraceImpl(translated, traceDistMin, traceDistMax, res)) { return false; }
+
+        res.WorldLocation += m_WorldLocation;
+        res.SetFaceNormal(translated, res.WorldNormal);
+        return true;
+    }
+
+    virtual BoundingBox GetBoundingBox() const override {
+        BoundingBox bounding = GetBoundingBoxImpl();
+        return BoundingBox(bounding.MinBound + m_WorldLocation,
+                           bounding.MaxBound + m_WorldLocation);
+    }
+
+    virtual bool TraceImpl(const Ray& ray, double traceDistMin, double traceDistMax, TraceResult& res) const {
+        return false;
+    }
+
+    virtual BoundingBox GetBoundingBoxImpl() const {
+        return BoundingBox();
+    }
 };
 
 class TraceableComponentComparator {
