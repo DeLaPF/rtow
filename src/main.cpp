@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
     Scene scene = Scene();
     Camera camera = Camera();
     Renderer renderer = Renderer();
-    Scenes::EmissiveRectangleTest(scene, camera, renderer);
+    Scenes::TransformTest(scene, camera, renderer);
 
     // Render
     Timer timer;

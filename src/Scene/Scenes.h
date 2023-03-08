@@ -172,4 +172,14 @@ namespace Scenes {
 
         renderer.SetBackgroundColor(Vec3(0.5, 0.7, 1.0));
     }
+
+    static void TransformTest(Scene& scene, Camera& camera, Renderer& renderer) {
+        std::shared_ptr<Texture> earthTexture = std::make_shared<ImageTexture>("external/textures/earthmap.jpg");
+        scene.addMaterial(std::make_shared<Material>(earthTexture));
+        scene.addComponent(std::make_shared<Sphere>(Vec3(0, 1, 0), 2, Vec3(-45, 143, -22), 0));
+
+        camera.SetView(Vec3(0, 1, 3.5), Vec3(0, 1, 0));
+
+        renderer.SetBackgroundColor(Vec3(0.5, 0.7, 1.0));
+    }
 }
