@@ -37,3 +37,26 @@ BoundingBox BoundingBox::Surrounding(const BoundingBox& a, const BoundingBox& b)
                     std::fmax(a.MaxBound.Z, b.MaxBound.Z));
     return BoundingBox(min, max);
 }
+
+void BoundingBox::Rotate(BoundingBox& bounding, double sinA, double cosA, size_t axis) {
+    Vec3 min = Vec3(std::numeric_limits<double>::max());
+    Vec3 max = Vec3(std::numeric_limits<double>::min());
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            for (int k = 0; k < 2; k++) {
+                double x = (i * bounding.MaxBound.X) + ((1 - i) * bounding.MinBound.X);
+                double y = (j * bounding.MaxBound.Y) + ((1 - j) * bounding.MinBound.Y);
+                double z = (k * bounding.MaxBound.Z) + ((1 - k) * bounding.MinBound.Z);
+
+                Vec3 corner = Vec3(x, y, z);
+                Vec3::Rotate(corner, sinA, cosA, axis);
+                for (int c = 0; c < 3; c++) {
+                    min[c] = std::fmin(min[c], corner[c]);
+                    max[c] = std::fmax(max[c], corner[c]);
+                }
+            }
+        }
+    }
+
+    bounding = BoundingBox(min, max);
+}
