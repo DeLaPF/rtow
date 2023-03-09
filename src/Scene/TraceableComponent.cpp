@@ -1,7 +1,19 @@
 #include "Scene/TraceableComponent.h"
-#include "Scene/BoundingVolume.h"
 
 #include <limits>
+
+TraceableComponent::TraceableComponent()
+        : SceneComponent() {
+    SetWorldRotation(Vec3());
+}
+TraceableComponent::TraceableComponent(Vec3 location, int materialIndex)
+        : SceneComponent(location, materialIndex) {
+    SetWorldRotation(Vec3());
+}
+TraceableComponent::TraceableComponent(Vec3 location, Vec3 rotation, int materialIndex)
+        : SceneComponent(location, rotation, materialIndex) {
+    SetWorldRotation(rotation);
+}
 
 void TraceableComponent::SetWorldRotation(Vec3 rotation) {
     SceneComponent::SetWorldRotation(rotation);
@@ -14,6 +26,8 @@ void TraceableComponent::SetWorldRotation(Vec3 rotation) {
 }
 
 bool TraceableComponent::Trace(const Ray& ray, double traceDistMin, double traceDistMax, TraceResult& res) const {
+    if (!GetBoundingBox().DoesOverlap(ray, traceDistMin, traceDistMax)) { return false; }
+
     Vec3 originInvRot = ray.Origin - m_WorldLocation;
     Vec3::Rotate(originInvRot, -m_SinPhi, m_CosPhi, 2);
     Vec3::Rotate(originInvRot, -m_SinTheta, m_CosTheta, 1);

@@ -6,11 +6,9 @@
 
 class Sphere : public TraceableComponent {
 public:
-    Sphere() : TraceableComponent(), Radius(0.5) {}
-    Sphere(Vec3 origin, double radius, int materialIndex)
-        : TraceableComponent(origin, materialIndex), Radius(radius) {}
-    Sphere(Vec3 origin, double radius, Vec3 rotation, int materialIndex)
-        : TraceableComponent(origin, rotation, materialIndex), Radius(radius) {}
+    Sphere();
+    Sphere(Vec3 origin, double radius, int materialIndex);
+    Sphere(Vec3 origin, double radius, Vec3 rotation, int materialIndex);
 
     virtual bool TraceImpl(const Ray& ray, double traceDistMin, double traceDistMax, TraceResult& res) const override;
 

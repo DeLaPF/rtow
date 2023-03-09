@@ -35,8 +35,8 @@ namespace Scenes {
         scene.addComponent(std::make_shared<RectXZ>(0, 555, 0, 555, 0, 1));
         scene.addComponent(std::make_shared<RectXZ>(0, 555, 0, 555, 555, 1));
         scene.addComponent(std::make_shared<RectXY>(0, 555, 0, 555, 555, 1));
-        scene.addComponent(std::make_shared<Box>(Vec3(130, 0, 65), Vec3(295, 165, 230), 1));
-        scene.addComponent(std::make_shared<Box>(Vec3(265, 0, 295), Vec3(430, 330, 460), 1));
+        scene.addComponent(std::make_shared<Box>(Vec3(130, 0, 65), Vec3(295, 165, 230), Vec3(0, -18, 0), 1));
+        scene.addComponent(std::make_shared<Box>(Vec3(265, 0, 295), Vec3(430, 330, 460), Vec3(0, 15, 0), 1));
         scene.GenBoundingVolumeHierarchy();
 
         camera.SetFOV(40);
@@ -176,9 +176,22 @@ namespace Scenes {
     static void TransformTest(Scene& scene, Camera& camera, Renderer& renderer) {
         std::shared_ptr<Texture> earthTexture = std::make_shared<ImageTexture>("external/textures/earthmap.jpg");
         scene.addMaterial(std::make_shared<Material>(earthTexture));
-        scene.addComponent(std::make_shared<Sphere>(Vec3(0, 1, 0), 2, Vec3(-45, 143, -22), 0));
+        scene.addMaterial(std::make_shared<Material>(Vec3(.65, .05, .05)));
+        scene.addMaterial(std::make_shared<Material>(Vec3(.73, .73, .73)));
+        scene.addMaterial(std::make_shared<Material>(Vec3(.12, .45, .15)));
+        scene.addMaterial(std::make_shared<Material>(Vec3(), Vec3(15)));
 
-        camera.SetView(Vec3(0, 1, 3.5), Vec3(0, 1, 0));
+        scene.addComponent(std::make_shared<RectYZ>(0, 5, 0, 5, 0, 3));
+        scene.addComponent(std::make_shared<RectYZ>(0, 5, 0, 5, 5, 1));
+        scene.addComponent(std::make_shared<RectXZ>(2, 3, 2, 3, 4.999, 4));
+        scene.addComponent(std::make_shared<RectXZ>(0, 5, 0, 5, 0, 2));
+        scene.addComponent(std::make_shared<RectXZ>(0, 5, 0, 5, 5, 2));
+        scene.addComponent(std::make_shared<RectXY>(0, 5, 0, 5, 0, 2));
+        scene.addComponent(std::make_shared<Sphere>(Vec3(2.5, 2.5, 2.5), 1.5, Vec3(-45, 143, -22), 0));
+        scene.GenBoundingVolumeHierarchy();
+
+        camera.SetView(Vec3(2.5, 2, 13), Vec3(2.5, 2.75, 0));
+        camera.SetFocalLength(3);
 
         renderer.SetBackgroundColor(Vec3(0.5, 0.7, 1.0));
     }

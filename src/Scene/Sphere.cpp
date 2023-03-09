@@ -2,6 +2,22 @@
 
 #include "Math/Utils.h"
 
+Sphere::Sphere()
+        : TraceableComponent(), Radius(0.5) {
+    SetWorldLocation(Vec3());
+    SetWorldRotation(Vec3());
+}
+Sphere::Sphere(Vec3 origin, double radius, int materialIndex)
+        : TraceableComponent(origin, materialIndex), Radius(radius) {
+    SetWorldLocation(origin);
+    SetWorldRotation(Vec3());
+}
+Sphere::Sphere(Vec3 origin, double radius, Vec3 rotation, int materialIndex)
+        : TraceableComponent(origin, rotation, materialIndex), Radius(radius) {
+    SetWorldLocation(origin);
+    SetWorldRotation(rotation);
+}
+
 bool Sphere::TraceImpl(const Ray& ray, double traceDistMin, double traceDistMax, TraceResult& res) const {
     double a = Vec3::dot(ray.Direction , ray.Direction);
     double b = 2.0 * Vec3::dot(ray.Origin, ray.Direction);

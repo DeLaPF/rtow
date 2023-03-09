@@ -9,11 +9,9 @@
 
 class TraceableComponent : public SceneComponent, Traceable {
 public:
-    TraceableComponent() : SceneComponent() {}
-    TraceableComponent(Vec3 location, int materialIndex)
-        : SceneComponent(location, materialIndex) {}
-    TraceableComponent(Vec3 location, Vec3 rotation, int materialIndex)
-        : SceneComponent(location, rotation, materialIndex) {}
+    TraceableComponent();
+    TraceableComponent(Vec3 location, int materialIndex);
+    TraceableComponent(Vec3 location, Vec3 rotation, int materialIndex);
 
     virtual void SetWorldRotation(Vec3 rotation) override;
 
