@@ -14,6 +14,8 @@ public:
     virtual bool TraceImpl(const Ray& ray, double traceDistMin, double traceDistMax, TraceResult& res) const override;
     virtual BoundingBox GetBoundingBoxImpl() const override { return BoundingBox(MinBound, MaxBound); }
 private:
+    inline void Setup(Vec3 location, Vec3 dimensions, Vec3 rotation, int materialIndex);
+private:
     Vec3 MinBound;
     Vec3 MaxBound;
     std::vector<std::shared_ptr<TraceableComponent>> Sides;
