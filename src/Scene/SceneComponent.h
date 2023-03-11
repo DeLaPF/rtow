@@ -19,7 +19,7 @@ public:
     virtual void SetMaterialIndex(int index) { m_MaterialIndex = index; }
 protected:
     Vec3 m_WorldLocation;
-    Vec3 m_WorldRotation; // X: Psi, Y: Theta, Z: Phi
+    Vec3 m_WorldRotation; // X: Phi, Y: Theta, Z: Psi
     int m_MaterialIndex;
 
     double m_SinPsi, m_CosPsi;

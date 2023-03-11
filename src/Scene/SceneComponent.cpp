@@ -21,14 +21,14 @@ SceneComponent::SceneComponent(Vec3 location, Vec3 rotation, int materialIndex)
 }
 
 void SceneComponent::SetWorldRotation(Vec3 rotation) {
-    double psi = Utils::degreesToRadians(rotation.X);
+    double phi = Utils::degreesToRadians(rotation.X);
     double theta = Utils::degreesToRadians(rotation.Y);
-    double phi = Utils::degreesToRadians(rotation.Z);
-    m_SinPsi = std::sin(psi);
-    m_CosPsi = std::cos(psi);
-    m_SinTheta = std::sin(theta);
-    m_CosTheta = std::cos(theta);
+    double psi = Utils::degreesToRadians(rotation.Z);
     m_SinPhi = std::sin(phi);
     m_CosPhi = std::cos(phi);
+    m_SinTheta = std::sin(theta);
+    m_CosTheta = std::cos(theta);
+    m_SinPsi = std::sin(psi);
+    m_CosPsi = std::cos(psi);
     m_WorldRotation = rotation;
 }

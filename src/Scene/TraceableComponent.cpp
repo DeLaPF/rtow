@@ -19,9 +19,9 @@ void TraceableComponent::SetWorldRotation(Vec3 rotation) {
     SceneComponent::SetWorldRotation(rotation);
 
     BoundingBox bounding = GetBoundingBoxImpl();
-    BoundingBox::BoundRotated(bounding, m_SinPsi, m_CosPsi, 0);
+    BoundingBox::BoundRotated(bounding, m_SinPhi, m_CosPhi, 0);
     BoundingBox::BoundRotated(bounding, m_SinTheta, m_CosTheta, 1);
-    BoundingBox::BoundRotated(bounding, m_SinPhi, m_CosPhi, 2);
+    BoundingBox::BoundRotated(bounding, m_SinPsi, m_CosPsi, 2);
     m_RotatedBoundingBox = bounding;
 }
 
@@ -30,25 +30,25 @@ bool TraceableComponent::Trace(const Ray& ray, double traceDistMin, double trace
 
     Ray translated = Ray(ray.Origin - m_WorldLocation, ray.Direction);
     Vec3 originInvRot = translated.Origin;
-    Vec3::Rotate(originInvRot, -m_SinPhi, m_CosPhi, 2);
+    Vec3::Rotate(originInvRot, -m_SinPsi, m_CosPsi, 2);
     Vec3::Rotate(originInvRot, -m_SinTheta, m_CosTheta, 1);
-    Vec3::Rotate(originInvRot, -m_SinPsi, m_CosPsi, 0);
+    Vec3::Rotate(originInvRot, -m_SinPhi, m_CosPhi, 0);
     Vec3 directionInvRot = translated.Direction;
-    Vec3::Rotate(directionInvRot, -m_SinPhi, m_CosPhi, 2);
+    Vec3::Rotate(directionInvRot, -m_SinPsi, m_CosPsi, 2);
     Vec3::Rotate(directionInvRot, -m_SinTheta, m_CosTheta, 1);
-    Vec3::Rotate(directionInvRot, -m_SinPsi, m_CosPsi, 0);
+    Vec3::Rotate(directionInvRot, -m_SinPhi, m_CosPhi, 0);
 
     Ray rotated = Ray(originInvRot, directionInvRot);
     if (!TraceImpl(rotated, traceDistMin, traceDistMax, res)) { return false; }
 
     Vec3 worldLocationRot = res.WorldLocation;
-    Vec3::Rotate(worldLocationRot, m_SinPsi, m_CosPsi, 0);
+    Vec3::Rotate(worldLocationRot, m_SinPhi, m_CosPhi, 0);
     Vec3::Rotate(worldLocationRot, m_SinTheta, m_CosTheta, 1);
-    Vec3::Rotate(worldLocationRot, m_SinPhi, m_CosPhi, 2);
+    Vec3::Rotate(worldLocationRot, m_SinPsi, m_CosPsi, 2);
     Vec3 worldNormalRot = res.WorldNormal;
-    Vec3::Rotate(worldNormalRot, m_SinPsi, m_CosPsi, 0);
+    Vec3::Rotate(worldNormalRot, m_SinPhi, m_CosPhi, 0);
     Vec3::Rotate(worldNormalRot, m_SinTheta, m_CosTheta, 1);
-    Vec3::Rotate(worldNormalRot, m_SinPhi, m_CosPhi, 2);
+    Vec3::Rotate(worldNormalRot, m_SinPsi, m_CosPsi, 2);
 
     res.WorldLocation = worldLocationRot + m_WorldLocation;
     if (Vec3::dot(res.WorldNormal, worldNormalRot) < 0) {
