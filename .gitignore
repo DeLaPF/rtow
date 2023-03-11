@@ -7,3 +7,4 @@ winBuild/
 compile_commands.json
 *.ppm
 *.out
+vgcore*

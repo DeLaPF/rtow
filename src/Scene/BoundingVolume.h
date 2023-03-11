@@ -17,6 +17,8 @@ public:
     virtual bool DoesOverlap(const Ray& ray, double traceDistMin, double traceDistMax) const override;
 
     static BoundingBox Surrounding(const BoundingBox& a, const BoundingBox& b);
+
+    static void BoundRotated(BoundingBox& bounding, double sinA, double cosA, size_t axis);
 public:
     Vec3 MinBound;
     Vec3 MaxBound;

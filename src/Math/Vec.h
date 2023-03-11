@@ -78,6 +78,24 @@ public:
                          u.Z * v.X - u.X * v.Z,
                          u.X * v.Y - u.Y * v.X);
     }
+
+    static inline void Rotate(Vec<SIZE>& vec, double sinA, double cosA, size_t axis) {
+        Vec<SIZE> temp = vec;
+        switch (axis) {
+        case 0:
+            vec.Y = (cosA * temp.Y) + (-sinA * temp.Z);
+            vec.Z = (sinA * temp.Y) + (cosA * temp.Z);
+            break;
+        case 1:
+            vec.X = (cosA * temp.X) + (sinA * temp.Z);
+            vec.Z = (-sinA * temp.X) + (cosA * temp.Z);
+            break;
+        case 2:
+            vec.X = (cosA * temp.X) + (-sinA * temp.Y);
+            vec.Y = (sinA * temp.X) + (cosA * temp.Y);
+            break;
+        }
+    }
 };
 
 using Vec2 = Vec<2>;

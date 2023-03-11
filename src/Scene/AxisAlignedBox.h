@@ -7,16 +7,15 @@
 
 class Box : public TraceableComponent {
 public:
-    Box() : TraceableComponent(), MinBound(Vec3(0, -1, -1)), MaxBound(Vec3(1, 0, 0)) {}
-    Box(Vec3 minBound, Vec3 maxBound, int materialIndex);
+    Box();
+    Box(Vec3 location, Vec3 dimensions, int materialIndex);
+    Box(Vec3 location, Vec3 dimensions, Vec3 rotation, int materialIndex);
 
-    virtual bool Trace(const Ray& ray, double traceDistMin, double traceDistMax, TraceResult& res) const override;
-
-    virtual BoundingBox GetBoundingBox() const override {
-        return BoundingBox(Vec3(MinBound.X, MinBound.Y, MinBound.Z),
-                           Vec3(MaxBound.X, MaxBound.Y, MaxBound.Z));
-    }
-public:
+    virtual bool TraceImpl(const Ray& ray, double traceDistMin, double traceDistMax, TraceResult& res) const override;
+    virtual BoundingBox GetBoundingBoxImpl() const override { return BoundingBox(MinBound, MaxBound); }
+private:
+    inline void Setup(Vec3 location, Vec3 dimensions, Vec3 rotation, int materialIndex);
+private:
     Vec3 MinBound;
     Vec3 MaxBound;
     std::vector<std::shared_ptr<TraceableComponent>> Sides;

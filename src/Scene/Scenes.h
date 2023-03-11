@@ -29,14 +29,14 @@ namespace Scenes {
         scene.addMaterial(std::make_shared<Material>(Vec3(.12, .45, .15)));
         scene.addMaterial(std::make_shared<Material>(Vec3(), Vec3(15)));
 
-        scene.addComponent(std::make_shared<RectYZ>(0, 555, 0, 555, 555, 2));
-        scene.addComponent(std::make_shared<RectYZ>(0, 555, 0, 555, 0, 0));
-        scene.addComponent(std::make_shared<RectXZ>(213, 343, 227, 332, 554, 3));
-        scene.addComponent(std::make_shared<RectXZ>(0, 555, 0, 555, 0, 1));
-        scene.addComponent(std::make_shared<RectXZ>(0, 555, 0, 555, 555, 1));
-        scene.addComponent(std::make_shared<RectXY>(0, 555, 0, 555, 555, 1));
-        scene.addComponent(std::make_shared<Box>(Vec3(130, 0, 65), Vec3(295, 165, 230), 1));
-        scene.addComponent(std::make_shared<Box>(Vec3(265, 0, 295), Vec3(430, 330, 460), 1));
+        scene.addComponent(std::make_shared<RectYZ>(Vec3(0, 0, 0), Vec2(555), 0));
+        scene.addComponent(std::make_shared<RectYZ>(Vec3(555, 0, 0), Vec2(555), 2));
+        scene.addComponent(std::make_shared<RectXZ>(Vec3(213, 554, 227), Vec2(130, 105), 3));
+        scene.addComponent(std::make_shared<RectXZ>(Vec3(0, 0, 0), Vec2(555), 1));
+        scene.addComponent(std::make_shared<RectXZ>(Vec3(0, 555, 0), Vec2(555), 1));
+        scene.addComponent(std::make_shared<RectXY>(Vec3(0, 0, 555), Vec2(555), 1));
+        scene.addComponent(std::make_shared<Box>(Vec3(130, 0, 65), Vec3(165, 165, 165), Vec3(0, -18, 0), 1));
+        scene.addComponent(std::make_shared<Box>(Vec3(265, 0, 295), Vec3(165, 330, 165), Vec3(0, 15, 0), 1));
         scene.GenBoundingVolumeHierarchy();
 
         camera.SetFOV(40);
@@ -64,7 +64,7 @@ namespace Scenes {
         scene.addMaterial(std::make_shared<Material>(Vec3(0.5), Vec3(5, 2, 2)));
         scene.addComponent(std::make_shared<Sphere>(Vec3(0,-1000,0), 1000, 0));
         scene.addComponent(std::make_shared<Sphere>(Vec3(0, 2, 0), 2, 0));
-        scene.addComponent(std::make_shared<RectXY>(3, 5, 1, 3, -2, 1));
+        scene.addComponent(std::make_shared<RectXY>(Vec3(3, 1, -2), Vec2(2), 1));
 
         camera.SetFOV(20);
         camera.SetView(Vec3(26, 3, 6), Vec3(0, 2, 0));
@@ -169,6 +169,28 @@ namespace Scenes {
         camera.SetAperture(0.1);
         camera.SetView(Vec3(13, 2, 3), Vec3(0, 0, 0));
         camera.SetFocusDist(10);
+
+        renderer.SetBackgroundColor(Vec3(0.5, 0.7, 1.0));
+    }
+
+    static void TransformTest(Scene& scene, Camera& camera, Renderer& renderer) {
+        std::shared_ptr<Texture> earthTexture = std::make_shared<ImageTexture>("external/textures/earthmap.jpg");
+        scene.addMaterial(std::make_shared<Material>(earthTexture));
+        scene.addMaterial(std::make_shared<Material>(Vec3(.65, .05, .05)));
+        scene.addMaterial(std::make_shared<Material>(Vec3(.73, .73, .73)));
+        scene.addMaterial(std::make_shared<Material>(Vec3(.12, .45, .15)));
+        scene.addMaterial(std::make_shared<Material>(Vec3(), Vec3(15)));
+
+        scene.addComponent(std::make_shared<RectYZ>(Vec3(2.5, 0, 0), Vec2(5), Vec3(0, -45, 0), 3));
+        scene.addComponent(std::make_shared<RectXY>(Vec3(2.5, 0, 0), Vec2(5), Vec3(0, -45, 0), 1));
+        scene.addComponent(std::make_shared<RectXZ>(Vec3(-1.035, 0, 3.535), Vec2(5), Vec3(0, 45, 0), 2));
+        scene.addComponent(std::make_shared<RectXZ>(Vec3(-1.035, 5, 3.535), Vec2(5), Vec3(0, 45, 0), 2));
+        scene.addComponent(std::make_shared<RectXZ>(Vec3(1.793, 4.999, 3.535), Vec2(1), Vec3(0, 45, 0), 4));
+        scene.addComponent(std::make_shared<Sphere>(Vec3(2.5, 2.5, 3.535), 1.5, Vec3(-45, 143, -22), 0));
+        scene.GenBoundingVolumeHierarchy();
+
+        camera.SetView(Vec3(2.5, 2, 15), Vec3(2.5, 2.75, 0));
+        camera.SetFocalLength(3);
 
         renderer.SetBackgroundColor(Vec3(0.5, 0.7, 1.0));
     }
