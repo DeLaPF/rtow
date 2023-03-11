@@ -28,18 +28,18 @@ void TraceableComponent::SetWorldRotation(Vec3 rotation) {
 bool TraceableComponent::Trace(const Ray& ray, double traceDistMin, double traceDistMax, TraceResult& res) const {
     if (!GetBoundingBox().DoesOverlap(ray, traceDistMin, traceDistMax)) { return false; }
 
-    Vec3 originInvRot = ray.Origin - m_WorldLocation;
+    Ray translated = Ray(ray.Origin - m_WorldLocation, ray.Direction);
+    Vec3 originInvRot = translated.Origin;
     Vec3::Rotate(originInvRot, -m_SinPhi, m_CosPhi, 2);
     Vec3::Rotate(originInvRot, -m_SinTheta, m_CosTheta, 1);
     Vec3::Rotate(originInvRot, -m_SinPsi, m_CosPsi, 0);
-    Vec3 directionInvRot = ray.Direction;
+    Vec3 directionInvRot = translated.Direction;
     Vec3::Rotate(directionInvRot, -m_SinPhi, m_CosPhi, 2);
     Vec3::Rotate(directionInvRot, -m_SinTheta, m_CosTheta, 1);
     Vec3::Rotate(directionInvRot, -m_SinPsi, m_CosPsi, 0);
 
-    Ray translated = Ray(ray.Origin - m_WorldLocation, ray.Direction);
-    Ray transformed = Ray(originInvRot, directionInvRot);
-    if (!TraceImpl(transformed, traceDistMin, traceDistMax, res)) { return false; }
+    Ray rotated = Ray(originInvRot, directionInvRot);
+    if (!TraceImpl(rotated, traceDistMin, traceDistMax, res)) { return false; }
 
     Vec3 worldLocationRot = res.WorldLocation;
     Vec3::Rotate(worldLocationRot, m_SinPsi, m_CosPsi, 0);
@@ -51,8 +51,12 @@ bool TraceableComponent::Trace(const Ray& ray, double traceDistMin, double trace
     Vec3::Rotate(worldNormalRot, m_SinPhi, m_CosPhi, 2);
 
     res.WorldLocation = worldLocationRot + m_WorldLocation;
-    res.SetFaceNormal(transformed, worldNormalRot);
-    res.SetFaceNormal(translated, res.WorldNormal);
+    if (Vec3::dot(res.WorldNormal, worldNormalRot) < 0) {
+        res.SetFaceNormal(rotated, worldNormalRot);
+        res.SetFaceNormal(translated, res.WorldNormal);
+    } else {
+        res.WorldNormal = worldNormalRot;
+    }
     return true;
 }
 

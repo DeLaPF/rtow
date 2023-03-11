@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
     Scene scene = Scene();
     Camera camera = Camera();
     Renderer renderer = Renderer();
-    Scenes::CornellBox(scene, camera, renderer);
+    Scenes::RandomSpheres(scene, camera, renderer);
 
     // Render
     Timer timer;
