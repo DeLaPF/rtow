@@ -7,15 +7,12 @@
 class RectXY : public TraceableComponent {
 public:
     RectXY();
-    RectXY(double minX, double maxX, double minY, double maxY, double z, int materialIndex);
-    RectXY(double minX, double maxX, double minY, double maxY, double z, Vec3 rotation, int materialIndex);
+    RectXY(Vec3 location, double xLen, double yLen, int materialIndex);
+    RectXY(Vec3 location, double xLen, double yLen, Vec3 rotation, int materialIndex);
 
     virtual bool TraceImpl(const Ray& ray, double traceDistMin, double traceDistMax, TraceResult& res) const override;
-
-    virtual BoundingBox GetBoundingBoxImpl() const override {
-        return BoundingBox(MinBound, MaxBound);
-    }
-public:
+    virtual BoundingBox GetBoundingBoxImpl() const override { return BoundingBox(MinBound, MaxBound); }
+private:
     Vec3 MinBound;
     Vec3 MaxBound;
 };
@@ -23,15 +20,12 @@ public:
 class RectXZ : public TraceableComponent {
 public:
     RectXZ();
-    RectXZ(double minX, double maxX, double minZ, double maxZ, double y, int materialIndex);
-    RectXZ(double minX, double maxX, double minZ, double maxZ, double y, Vec3 rotation, int materialIndex);
+    RectXZ(Vec3 location, double xLen, double zLen, int materialIndex);
+    RectXZ(Vec3 location, double xLen, double zLen, Vec3 rotation, int materialIndex);
 
     virtual bool TraceImpl(const Ray& ray, double traceDistMin, double traceDistMax, TraceResult& res) const override;
-
-    virtual BoundingBox GetBoundingBoxImpl() const override {
-        return BoundingBox(MinBound, MaxBound);
-    }
-public:
+    virtual BoundingBox GetBoundingBoxImpl() const override { return BoundingBox(MinBound, MaxBound); }
+private:
     Vec3 MinBound;
     Vec3 MaxBound;
 };
@@ -39,15 +33,12 @@ public:
 class RectYZ : public TraceableComponent {
 public:
     RectYZ();
-    RectYZ(double minY, double maxY, double minZ, double maxZ, double x, int materialIndex);
-    RectYZ(double minY, double maxY, double minZ, double maxZ, double x, Vec3 rotation, int materialIndex);
+    RectYZ(Vec3 location, double yLen, double zLen, int materialIndex);
+    RectYZ(Vec3 location, double yLen, double zLen, Vec3 rotation, int materialIndex);
 
     virtual bool TraceImpl(const Ray& ray, double traceDistMin, double traceDistMax, TraceResult& res) const override;
-
-    virtual BoundingBox GetBoundingBoxImpl() const override {
-        return BoundingBox(MinBound, MaxBound);
-    }
-public:
+    virtual BoundingBox GetBoundingBoxImpl() const override { return BoundingBox(MinBound, MaxBound); }
+private:
     Vec3 MinBound;
     Vec3 MaxBound;
 };

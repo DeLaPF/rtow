@@ -8,44 +8,44 @@ Box::Box()
     SetWorldLocation(Vec3());
     SetWorldRotation(Vec3());
 
-    Sides.push_back(std::make_shared<RectXY>(MinBound.X, MaxBound.X, MinBound.Y, MaxBound.Y, MaxBound.Z, -1));
-    Sides.push_back(std::make_shared<RectXY>(MinBound.X, MaxBound.X, MinBound.Y, MaxBound.Y, MinBound.Z, -1));
+    Sides.push_back(std::make_shared<RectXY>(Vec3(0, 0, 0), 1, 1, -1));
+    Sides.push_back(std::make_shared<RectXY>(Vec3(0, 0, 1), 1, 1, -1));
 
-    Sides.push_back(std::make_shared<RectXZ>(MinBound.X, MaxBound.X, MinBound.Z, MaxBound.Z, MaxBound.Y, -1));
-    Sides.push_back(std::make_shared<RectXZ>(MinBound.X, MaxBound.X, MinBound.Z, MaxBound.Z, MinBound.Y, -1));
+    Sides.push_back(std::make_shared<RectXZ>(Vec3(0, 0, 0), 1, 1, -1));
+    Sides.push_back(std::make_shared<RectXZ>(Vec3(0, 1, 0), 1, 1, -1));
 
-    Sides.push_back(std::make_shared<RectYZ>(MinBound.Y, MaxBound.Y, MinBound.Z, MaxBound.Z, MaxBound.X, -1));
-    Sides.push_back(std::make_shared<RectYZ>(MinBound.Y, MaxBound.Y, MinBound.Z, MaxBound.Z, MinBound.X, -1));
+    Sides.push_back(std::make_shared<RectXZ>(Vec3(0, 0, 0), 1, 1, -1));
+    Sides.push_back(std::make_shared<RectXZ>(Vec3(1, 0, 0), 1, 1, -1));
 }
-Box::Box(Vec3 minBound, Vec3 maxBound, int materialIndex)
-        : TraceableComponent(minBound, materialIndex),
-          MinBound(0, 0, 0), MaxBound(maxBound - minBound) {
-    SetWorldLocation(minBound);
+Box::Box(Vec3 location, Vec3 dimensions, int materialIndex)
+        : TraceableComponent(location, materialIndex),
+          MinBound(0, 0, 0), MaxBound(dimensions) {
+    SetWorldLocation(location);
     SetWorldRotation(Vec3());
 
-    Sides.push_back(std::make_shared<RectXY>(MinBound.X, MaxBound.X, MinBound.Y, MaxBound.Y, MaxBound.Z, materialIndex));
-    Sides.push_back(std::make_shared<RectXY>(MinBound.X, MaxBound.X, MinBound.Y, MaxBound.Y, MinBound.Z, materialIndex));
+    Sides.push_back(std::make_shared<RectXY>(Vec3(0, 0, 0), dimensions.X, dimensions.Y, materialIndex));
+    Sides.push_back(std::make_shared<RectXY>(Vec3(0, 0, dimensions.Z), dimensions.X, dimensions.Y, materialIndex));
 
-    Sides.push_back(std::make_shared<RectXZ>(MinBound.X, MaxBound.X, MinBound.Z, MaxBound.Z, MaxBound.Y, materialIndex));
-    Sides.push_back(std::make_shared<RectXZ>(MinBound.X, MaxBound.X, MinBound.Z, MaxBound.Z, MinBound.Y, materialIndex));
+    Sides.push_back(std::make_shared<RectXZ>(Vec3(0, 0, 0), dimensions.X, dimensions.Z, materialIndex));
+    Sides.push_back(std::make_shared<RectXZ>(Vec3(0, dimensions.Y, 0), dimensions.X, dimensions.Z, materialIndex));
 
-    Sides.push_back(std::make_shared<RectYZ>(MinBound.Y, MaxBound.Y, MinBound.Z, MaxBound.Z, MaxBound.X, materialIndex));
-    Sides.push_back(std::make_shared<RectYZ>(MinBound.Y, MaxBound.Y, MinBound.Z, MaxBound.Z, MinBound.X, materialIndex));
+    Sides.push_back(std::make_shared<RectYZ>(Vec3(0, 0, 0), dimensions.Y, dimensions.Z, materialIndex));
+    Sides.push_back(std::make_shared<RectYZ>(Vec3(dimensions.X, 0, 0), dimensions.Y, dimensions.Z, materialIndex));
 }
-Box::Box(Vec3 minBound, Vec3 maxBound, Vec3 rotation, int materialIndex)
-        : TraceableComponent(minBound, materialIndex),
-          MinBound(0, 0, 0), MaxBound(maxBound - minBound) {
-    SetWorldLocation(minBound);
+Box::Box(Vec3 location, Vec3 dimensions, Vec3 rotation, int materialIndex)
+        : TraceableComponent(location, materialIndex),
+          MinBound(0, 0, 0), MaxBound(dimensions) {
+    SetWorldLocation(location);
     SetWorldRotation(rotation);
 
-    Sides.push_back(std::make_shared<RectXY>(MinBound.X, MaxBound.X, MinBound.Y, MaxBound.Y, MaxBound.Z, materialIndex));
-    Sides.push_back(std::make_shared<RectXY>(MinBound.X, MaxBound.X, MinBound.Y, MaxBound.Y, MinBound.Z, materialIndex));
+    Sides.push_back(std::make_shared<RectXY>(Vec3(0, 0, 0), dimensions.X, dimensions.Y, materialIndex));
+    Sides.push_back(std::make_shared<RectXY>(Vec3(0, 0, dimensions.Z), dimensions.X, dimensions.Y, materialIndex));
 
-    Sides.push_back(std::make_shared<RectXZ>(MinBound.X, MaxBound.X, MinBound.Z, MaxBound.Z, MaxBound.Y, materialIndex));
-    Sides.push_back(std::make_shared<RectXZ>(MinBound.X, MaxBound.X, MinBound.Z, MaxBound.Z, MinBound.Y, materialIndex));
+    Sides.push_back(std::make_shared<RectXZ>(Vec3(0, 0, 0), dimensions.X, dimensions.Z, materialIndex));
+    Sides.push_back(std::make_shared<RectXZ>(Vec3(0, dimensions.Y, 0), dimensions.X, dimensions.Z, materialIndex));
 
-    Sides.push_back(std::make_shared<RectYZ>(MinBound.Y, MaxBound.Y, MinBound.Z, MaxBound.Z, MaxBound.X, materialIndex));
-    Sides.push_back(std::make_shared<RectYZ>(MinBound.Y, MaxBound.Y, MinBound.Z, MaxBound.Z, MinBound.X, materialIndex));
+    Sides.push_back(std::make_shared<RectYZ>(Vec3(0, 0, 0), dimensions.Y, dimensions.Z, materialIndex));
+    Sides.push_back(std::make_shared<RectYZ>(Vec3(dimensions.X, 0, 0), dimensions.Y, dimensions.Z, materialIndex));
 }
 
 bool Box::TraceImpl(const Ray& ray, double traceDistMin, double traceDistMax, TraceResult& res) const {

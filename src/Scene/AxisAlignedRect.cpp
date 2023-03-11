@@ -7,18 +7,18 @@ RectXY::RectXY()
     SetWorldLocation(Vec3());
     SetWorldRotation(Vec3());
 }
-RectXY::RectXY(double minX, double maxX, double minY, double maxY, double z, int materialIndex)
-        : TraceableComponent(Vec3(minX, minY, z), materialIndex),
+RectXY::RectXY(Vec3 location, double xLen, double yLen, int materialIndex)
+        : TraceableComponent(location, materialIndex),
           MinBound(Vec3(0, 0, -0.0001)),
-          MaxBound(Vec3(maxX - minX, maxY - minY, 0.0001)) {
-    SetWorldLocation(Vec3(minX, minY, z));
+          MaxBound(Vec3(xLen, yLen, location.Z + 0.0001)) {
+    SetWorldLocation(location);
     SetWorldRotation(Vec3());
 }
-RectXY::RectXY(double minX, double maxX, double minY, double maxY, double z, Vec3 rotation, int materialIndex)
-        : TraceableComponent(Vec3(minX, minY, z), rotation, materialIndex),
+RectXY::RectXY(Vec3 location, double xLen, double yLen, Vec3 rotation, int materialIndex)
+        : TraceableComponent(location, rotation, materialIndex),
           MinBound(Vec3(0, 0, -0.0001)),
-          MaxBound(Vec3(maxX - minX, maxY - minY, 0.0001)) {
-    SetWorldLocation(Vec3(minX, minY, z));
+          MaxBound(Vec3(xLen, yLen, location.Z + 0.0001)) {
+    SetWorldLocation(location);
     SetWorldRotation(rotation);
 }
 
@@ -46,18 +46,18 @@ RectXZ::RectXZ()
     SetWorldLocation(Vec3());
     SetWorldRotation(Vec3());
 }
-RectXZ::RectXZ(double minX, double maxX, double minZ, double maxZ, double y, int materialIndex)
-        : TraceableComponent(Vec3(minX, y, minZ), materialIndex),
+RectXZ::RectXZ(Vec3 location, double xLen, double zLen, int materialIndex)
+        : TraceableComponent(location, materialIndex),
           MinBound(Vec3(0, -0.0001, 0)),
-          MaxBound(Vec3(maxX - minX, 0.0001, maxZ - minZ)) {
-    SetWorldLocation(Vec3(minX, y, minZ));
+          MaxBound(Vec3(xLen, location.Y + 0.0001, zLen)) {
+    SetWorldLocation(location);
     SetWorldRotation(Vec3());
 }
-RectXZ::RectXZ(double minX, double maxX, double minZ, double maxZ, double y, Vec3 rotation, int materialIndex)
-        : TraceableComponent(Vec3(minX, y, minZ), rotation, materialIndex),
+RectXZ::RectXZ(Vec3 location, double xLen, double zLen, Vec3 rotation, int materialIndex)
+        : TraceableComponent(location, rotation, materialIndex),
           MinBound(Vec3(0, -0.0001, 0)),
-          MaxBound(Vec3(maxX - minX, 0.0001, maxZ - minZ)) {
-    SetWorldLocation(Vec3(minX, y, minZ));
+          MaxBound(Vec3(xLen, location.Y + 0.0001, zLen)) {
+    SetWorldLocation(location);
     SetWorldRotation(rotation);
 }
 
@@ -85,18 +85,18 @@ RectYZ::RectYZ()
     SetWorldLocation(Vec3());
     SetWorldRotation(Vec3());
 }
-RectYZ::RectYZ(double minY, double maxY, double minZ, double maxZ, double x, int materialIndex)
-    : TraceableComponent(Vec3(x, minY, minZ), materialIndex),
-      MinBound(Vec3(-0.0001, 0, 0)),
-      MaxBound(Vec3(0.0001, maxY - minY, maxZ - minZ)) {
-    SetWorldLocation(Vec3(x, minY, minZ));
+RectYZ::RectYZ(Vec3 location, double yLen, double zLen, int materialIndex)
+        : TraceableComponent(location, materialIndex),
+          MinBound(Vec3(-0.0001, 0, 0)),
+          MaxBound(Vec3(location.X + 0.0001, yLen, zLen)) {
+    SetWorldLocation(location);
     SetWorldRotation(Vec3());
 }
-RectYZ::RectYZ(double minY, double maxY, double minZ, double maxZ, double x, Vec3 rotation, int materialIndex)
-    : TraceableComponent(Vec3(x, minY, minZ), rotation, materialIndex),
-      MinBound(Vec3(-0.0001, 0, 0)),
-      MaxBound(Vec3(0.0001, maxY - minY, maxZ - minZ)) {
-    SetWorldLocation(Vec3(x, minY, minZ));
+RectYZ::RectYZ(Vec3 location, double yLen, double zLen, Vec3 rotation, int materialIndex)
+        : TraceableComponent(location, rotation, materialIndex),
+          MinBound(Vec3(-0.0001, 0, 0)),
+          MaxBound(Vec3(location.X + 0.0001, yLen, zLen)) {
+    SetWorldLocation(location);
     SetWorldRotation(rotation);
 }
 
