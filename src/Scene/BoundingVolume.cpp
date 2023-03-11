@@ -38,7 +38,7 @@ BoundingBox BoundingBox::Surrounding(const BoundingBox& a, const BoundingBox& b)
     return BoundingBox(min, max);
 }
 
-void BoundingBox::Rotate(BoundingBox& bounding, double sinA, double cosA, size_t axis) {
+void BoundingBox::BoundRotated(BoundingBox& bounding, double sinA, double cosA, size_t axis) {
     Vec3 min = Vec3(std::numeric_limits<double>::max());
     Vec3 max = Vec3(std::numeric_limits<double>::min());
     for (int i = 0; i < 2; i++) {

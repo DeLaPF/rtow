@@ -19,9 +19,9 @@ void TraceableComponent::SetWorldRotation(Vec3 rotation) {
     SceneComponent::SetWorldRotation(rotation);
 
     BoundingBox bounding = GetBoundingBoxImpl();
-    BoundingBox::Rotate(bounding, m_SinPsi, m_CosPsi, 0);
-    BoundingBox::Rotate(bounding, m_SinTheta, m_CosTheta, 1);
-    BoundingBox::Rotate(bounding, m_SinPhi, m_CosPhi, 2);
+    BoundingBox::BoundRotated(bounding, m_SinPsi, m_CosPsi, 0);
+    BoundingBox::BoundRotated(bounding, m_SinTheta, m_CosTheta, 1);
+    BoundingBox::BoundRotated(bounding, m_SinPhi, m_CosPhi, 2);
     m_RotatedBoundingBox = bounding;
 }
 

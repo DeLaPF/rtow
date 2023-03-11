@@ -18,7 +18,7 @@ public:
 
     static BoundingBox Surrounding(const BoundingBox& a, const BoundingBox& b);
 
-    static void Rotate(BoundingBox& bounding, double sinA, double cosA, size_t axis);
+    static void BoundRotated(BoundingBox& bounding, double sinA, double cosA, size_t axis);
 public:
     Vec3 MinBound;
     Vec3 MaxBound;
